@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, sqlite
 import sqlite3
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def index():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM flashcards")
     flashcards = cursor.fetchall()
-    return render_template('index.html', flashcards=flashcards)
+    return render_template('flashcards.html', flashcards=flashcards)
 
 @app.route('/add_flashcard', methods=['POST'])
 def add_flashcard():
