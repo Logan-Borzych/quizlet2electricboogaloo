@@ -12,9 +12,9 @@
 -- INSERT INTO cardData (setId, cardId, cardName, cardDef)
 -- VALUES ("2", "2", "Bread", "From Grain");
 
-INSERT INTO cardData (setId, cardId, cardName, cardDef)
-VALUES("3", "1", "Nate", "Very Handsome");
+-- INSERT INTO cardData (setId, cardId, cardName, cardDef)
+--VALUES("3", "1", "Nate", "Very Handsome");
 
-INSERT INTO cardData (setId, cardId, cardName, cardDef)
-VALUES ("3", "2", "Sehr", "Not as Handsome");
+-- INSERT INTO cardData (setId, cardId, cardName, cardDef)
+--VALUES ("3", "2", "Sehr", "Not as Handsome");
 
