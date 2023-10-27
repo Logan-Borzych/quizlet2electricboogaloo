@@ -17,12 +17,12 @@ body {
   margin: 2rem;
 }
 .draggable {
-  height: 5rem;
-  width: 5rem;
+  height: 7rem;
+  width: 7rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4rem;
+  font-size: 2rem;
   margin: 0rem 0.5rem;
   cursor: move;
   transition: opacity 0.2s;
@@ -41,9 +41,9 @@ body {
   text-align: center;
   font-size: 4rem;
   font-weight: bold;
-  background-color: #fff;
-  border: 3px dashed #111;
-  transition: border-width 0.2s, transform 0.2s, background-color 0.4s;
+  background-color: #ffffff;
+  border: 3px dashed #000000;
+  transition: border-width 0.2s, transform 0.2s, background-color 0.9s;
 }
 .droppable span {
   font-size: 1.25rem;
@@ -53,13 +53,13 @@ body {
 /* Drag and Drop Related Styling */
 
 .droppable.droppable-hover {
-  /* background-color: #bee3f0; */
+  /* background-color: #bee3f0 */
   border-width: 5px;
   transform: scale(1.1);
 }
 .droppable.dropped {
   border-style: solid;
-  color: #fff;
+  color: #0ef50e;
 }
 .droppable.dropped span {
   font-size: 0.75rem;
