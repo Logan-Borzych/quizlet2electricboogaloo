@@ -1,49 +1,33 @@
-from flask import Flask, render_template, request, redirect, url_for, sqlite
+#import all libs
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
+#init tree
 app = Flask(__name__)
 
-app.config['DATABASE'] = 'flashcards.db'
+#define the SQLite database file
+db_path = "../databases/flashcards.db"
 
-def get_db():
-    db = getattr(app, '_database', None)
-    if db is None:
-        db = app._database = sqlite3.connect(app.config['DATABASE'])
-    return db
-
-@app.teardown_appcontext
-def close_db(error):
-    db = getattr(app, '_database', None)
-    if db is not None:
-        db.close()
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
+def connect_db():
+    return sqlite3.connect(db_path)
 
 @app.route('/')
 def index():
-    # Fetch flashcard entries from the database
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM flashcards")
-    flashcards = cursor.fetchall()
-    return render_template('flashcards.html', flashcards=flashcards)
+    return render_template('../templates/flashcards.html')
 
-@app.route('/add_flashcard', methods=['POST'])
-def add_flashcard():
-    question = request.form['question']
-    answer = request.form['answer']
+@app.route('/submit', methods=['POST'])
+def submit():
+    card_name = request.form['card_name']
+    card_def = request.form['card_def']
 
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("INSERT INTO flashcards (question, answer) VALUES (?, ?)", (question, answer))
-    db.commit()
+    # Insert the form data into the database
+    with connect_db() as db:
+        cursor = db.cursor()
+        cursor.execute("INSERT INTO carddata (setID, cardName, cardDef) VALUES (?, ?, ?)",
+                       (set_number, card_name, card_def))
+        db.commit()
 
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
