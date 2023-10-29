@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% extends "base.html" %} 
+{% block title %}{% endblock %}
+{% block content %}
 <body>
-<div class = "navbar">
     <div class="container">
         <nav>
             <u1 class = "primary-nav">
-                <!--no need to change anything here, logan will handle page requests-->
-                <li><a href = "sets">Flashcards</a></li>
-                <li><a href = "quiz">Quiz</a></li>
-                <li><a href = "match">Matching</a></li>
+                <li><a href = "{{ url_for('specificSets')}}">Flashcards</a></li>
+                <li><a href = "#">Quiz</a></li>
+                <li><a href = "{{ url_for('match')}}">Matching</a></li>
             </u1>
         </nav>
     </div>
-</div>
 </body>
-</html>
+{% endblock %}
