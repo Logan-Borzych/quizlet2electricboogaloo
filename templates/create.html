@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+{% extends "base.html" %} 
+{% block title %}{% endblock %}
+{% block content %}
 <body>
-    <div class="container">
-        <nav>
-            <u1 class = "primary-nav">
-                <li class = "current"><a href="#">Home</a></li>
-                <li><a href = "featureselect.html">Features</a></li>
-                <li><a href = "login.html">Login</a></li>
-            </ul>
-        </nav>
-    </div>
     <main class="flex-container">
 
         <section class="main-content blue">
           <h2>Main Content</h2>
           <p>
-           <a href = "flashcards.html">Create Flashcards</a>
-           <a href = "matching.html">Create Matching Cards</a>
+           <a href = "sets">Create Flashcards</a>
+           <a href = "match">Create Matching Cards</a>
           </p>
         </section>
     
@@ -30,4 +16,4 @@
     
       </main>
 </body>
-</html>
+{% endblock %}

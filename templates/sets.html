@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+{% block title %}{% endblock %}
+{% block content %}
+<body>
+    <div class="container">
+        <h1>term/definition</h1>
+        <br/>
+        <form action="/sets" METHOD="POST">
+            <input type="text" placeholder="Term" name="term">
+            <input type="text" placeholder="Definition" name="definition">
+            <input type="submit" value="Add Term" class="button">
+        </form>
+        <br/>
+        {% for termW in pairs %}
+            <p>
+                Term: {{ termW.term }} Definition: {{ termW.definition }} 
+                <a href="/edit/{{ termW.id }}" class="button"><button>Edit</button></a>
+                <a href="/delete/{{ termW.id }}" class="button"><button>Delete</button></a>
+            </p>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}
