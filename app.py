@@ -7,6 +7,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terms.db'
 
 db = SQLAlchemy(app)
 
+
+#to start app use "python app.py" in the command line
+#to stop, use ctrl+C in terminal
 #class definition for database entries
 class Term(db.Model):
     id = db.Column(db.Integer, primary_key=True)
