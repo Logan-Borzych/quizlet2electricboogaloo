@@ -32,10 +32,17 @@ def home():
 def features():
     return render_template('featureselect.html')
 
+#routes to home for now, i dont know what this page is for
 #create page (functionality is questionable)
-@app.route('/create', methods=['get','post'])
+@app.route('/home', methods=['get','post'])
 def createPage():
     return render_template('create.html')
+
+
+@app.route('/create', methods['GET', 'POST'])
+def createSet():
+    if request.method == post:
+        
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
