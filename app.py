@@ -20,6 +20,13 @@ class Term(db.Model):
     def __repr__(self):
         return '<name %r>' % self.id
 
+class SetList(db.Model):
+    SetID = db.Column(db.Integer, primary_key=True)
+    setName = db.Column(db.String, nullable=False)
+
+    
+
+
 #ROUTES TO RENDER WEBPAGE AND DETERMINE ROUTES FOR WEBPAGES
 
 #homepage
@@ -39,16 +46,17 @@ def createPage():
     return render_template('create.html')
 
 
-@app.route('/create', methods['GET', 'POST'])
+@app.route('/create', methods=['GET', 'POST'])
 def createSet():
-    if request.method == post:
-        
+    if request.method == "POST":
+        return
+    else:
+        return render_template('createSet.html')
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
 @app.route('/sets', methods=['GET','POST'])
 def specificSets():
-
     if request.method == "POST":
 
         #grabs term and definition
