@@ -24,8 +24,6 @@ class SetList(db.Model):
     SetID = db.Column(db.Integer, primary_key=True)
     setName = db.Column(db.String, nullable=False)
 
-    
-
 
 #ROUTES TO RENDER WEBPAGE AND DETERMINE ROUTES FOR WEBPAGES
 
@@ -125,6 +123,10 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     return render_template('signup.html')
+
+@app.route('/explore', methods=['GET', 'POST'])
+def explore():
+    return render_template('explore.html')
 
 if __name__ == '__main__':
     app.run()
