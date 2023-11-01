@@ -1,1 +1,8 @@
-use this folder to store files that end in .html or .htm
+Templates folder used to store every file used in the front end.
+As of 10/27/2023 this includes:
+- Frontpage
+- Flashcard Page
+- Features Page
+- Matching Page
+- Login + Signup Page
+- "Create" tab Page
