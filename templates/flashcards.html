@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" type="image/png" href="flashcard.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-  <link rel="stylesheet" href= "../static/css/style.css">
-  <title>Flashcards</title>
-</head>
+{% extends "base.html" %} 
+{% block title %}{% endblock %}
+{% block content %}
 <body>
 
   <main>
@@ -28,6 +21,7 @@
       <div class="container">
         <div id="create_card">
           <h2>Create Flashcard</h2>
+          <!---FIX THIS SO IT ALIGNS WITH MODERN STANDARDS FOR HTML, THE CURRENT CODE IS NOT FIT FOR CURRENT USE-->
           <label for="question">Question</label>
           <textarea id="question" maxlength="280"></textarea>
           <label for="answer" maxlength="280">Answer</label>
@@ -50,4 +44,4 @@
   
   <script src="../static/js/flashcardScript.js"></script>
 </body>
-</html>
+{% endblock %}

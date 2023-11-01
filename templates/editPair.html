@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Change term or def</h1>
+        <br/>
+        <form action="/edit/{{ Term.id }}" method="POST">
+            <input type="text" placeholder="Term" name="term" value="{{ Term.term }}">
+            <input type="text" placeholder="Definition" name="definition" value="{{ Term.definition }}">
+            <input type="submit" value="Edit Term" class="button">
+        </form>
+    </div>
+{% endblock %}
