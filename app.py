@@ -43,9 +43,12 @@ def features():
 def createPage():
     return render_template('create.html')
 
+@app.route('/create')
+def create():
+    return render_template('create.html')
 
-@app.route('/create', methods=['GET', 'POST'])
-def createSet():
+@app.route('/create_set', methods=['GET', 'POST'])
+def create_set():
     if request.method == "POST":
         return
     else:
