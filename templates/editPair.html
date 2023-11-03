@@ -7,6 +7,7 @@
         <form action="/edit/{{ Term.id }}" method="POST">
             <input type="text" placeholder="Term" name="term" value="{{ Term.term }}">
             <input type="text" placeholder="Definition" name="definition" value="{{ Term.definition }}">
+            <input type="text" placeholder="Name of Set" name="Set Name" value="{{ Term.setName }}">
             <input type="submit" value="Edit Term" class="button">
         </form>
     </div>
