@@ -8,13 +8,12 @@
         <form action="/sets" METHOD="POST">
             <input type="text" placeholder="Term" name="term">
             <input type="text" placeholder="Definition" name="definition">
-            <input type="text" placeholder="Name of Set" name="setName">
             <input type="submit" value="Add Term" class="button">
         </form>
         <br/>
         {% for termW in pairs %}
             <p>
-                Term: {{ termW.term }} Definition: {{ termW.definition }} Set Name: {{termW.setName}}
+                Term: {{ termW.term }} Definition: {{ termW.definition }}
                 <a href="/edit/{{ termW.id }}" class="button"><button>Edit</button></a>
                 <a href="/delete/{{ termW.id }}" class="button"><button>Delete</button></a>
             </p>
