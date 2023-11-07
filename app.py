@@ -21,8 +21,8 @@ class Term(db.Model):
         return '<name %r>' % self.id
 
 class SetList(db.Model):
-    SetID = db.Column(db.Integer, primary_key=True)
-    setName = db.Column(db.String, nullable=False)
+    set_id = db.Column(db.Integer, primary_key=True)
+    set_name = db.Column(db.String, nullable=False)
 
 
 #ROUTES TO RENDER WEBPAGE AND DETERMINE ROUTES FOR WEBPAGES
@@ -49,10 +49,11 @@ def create():
 
 @app.route('/create_set', methods=['GET', 'POST'])
 def create_set():
-    if request.method == "POST":
-        return
-    else:
-        return render_template('createSet.html')
+    #if request.method == "POST":
+    
+    #else:
+        
+    return render_template('createSet.html')
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
@@ -132,4 +133,4 @@ def explore():
     return render_template('explore.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(app.debug=True)
