@@ -15,6 +15,7 @@ class Term(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(255), nullable=False)
     definition = db.Column(db.String(255), nullable=False)
+    setName = db.Column(db.String(255), nullable=False)
 
     #i still dont know what this means
     def __repr__(self):
@@ -64,9 +65,10 @@ def specificSets():
         #grabs term and definition
         termForm = request.form['term']
         definitionForm = request.form['definition']
+        setForm = request.form['setName']
 
         #creates new Term objects and adds to database
-        pair = Term(term=termForm, definition=definitionForm)
+        pair = Term(term=termForm, definition=definitionForm, setName=setForm)
 
         #pushes Term object to the database
         try:
@@ -92,6 +94,7 @@ def editPair(id):
     if request.method == "POST":
         pairToUpdate.term = request.form['term']
         pairToUpdate.definition = request.form['definition']
+        pairToUpdate.setName = request.form['setName']
         try:
             db.session.commit()
             return redirect('/sets')
@@ -133,4 +136,4 @@ def explore():
     return render_template('explore.html')
 
 if __name__ == '__main__':
-    app.run(app.debug=True)
+    app.run()
