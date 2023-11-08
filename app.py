@@ -15,14 +15,15 @@ class Term(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(255), nullable=False)
     definition = db.Column(db.String(255), nullable=False)
+    setName = db.Column(db.String(255), nullable=False)
 
     #i still dont know what this means
     def __repr__(self):
         return '<name %r>' % self.id
 
-class SetList(db.Model):
-    SetID = db.Column(db.Integer, primary_key=True)
-    setName = db.Column(db.String, nullable=False)
+class set_list(db.Model):
+    set_id = db.Column(db.Integer, primary_key=True)
+    set_name = db.Column(db.String, nullable=False)
 
 
 #ROUTES TO RENDER WEBPAGE AND DETERMINE ROUTES FOR WEBPAGES
@@ -50,22 +51,35 @@ def create():
 @app.route('/create_set', methods=['GET', 'POST'])
 def create_set():
     if request.method == "POST":
-        return
+        
+        set_name = request.form['name']
+
+        new_set = set_list(set_name=set_name)
+
+        try:
+            db.session.add(new_set)
+            db.session.commit()
+            return redirect(url_for('sets/set_name'))
+        except Exception as e:
+            print(f"Error: {e}")
+            return "check console"
     else:
-        return render_template('createSet.html')
+        render_sets = set_list.query.order_by(set_list.id)
+    return render_template('createSet.html')
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
-@app.route('/sets', methods=['GET','POST'])
+@app.route('/sets/<string:name>', methods=['GET','POST'])
 def specificSets():
     if request.method == "POST":
 
         #grabs term and definition
         termForm = request.form['term']
         definitionForm = request.form['definition']
+        setForm = request.form['setName']
 
         #creates new Term objects and adds to database
-        pair = Term(term=termForm, definition=definitionForm)
+        pair = Term(term=termForm, definition=definitionForm, setName=setForm)
 
         #pushes Term object to the database
         try:
@@ -82,8 +96,8 @@ def specificSets():
         return render_template('sets.html', pairs=pairs)
 
 #allows the user to update their database entry
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def editPair(id):
+@app.route('/sets/<string:set_name>/edit/<int:id>', methods=['GET', 'POST'])
+def editPair(id, set_name):
     # Requests the database entry for the pair that the user wants to update
     pairToUpdate = Term.query.get_or_404(id)
 
@@ -91,6 +105,7 @@ def editPair(id):
     if request.method == "POST":
         pairToUpdate.term = request.form['term']
         pairToUpdate.definition = request.form['definition']
+        pairToUpdate.setName = request.form['setName']
         try:
             db.session.commit()
             return redirect('/sets')
