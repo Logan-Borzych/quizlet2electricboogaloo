@@ -48,29 +48,27 @@ def createPage():
 def create():
     return render_template('create.html')
 
-@app.route('/create_set', methods=['GET', 'POST'])
-def create_set():
+@app.route('/create_set/<name>', methods=['GET', 'POST'])
+def create_set(name):
     if request.method == "POST":
-        
         set_name = request.form['name']
-
         new_set = set_list(set_name=set_name)
 
         try:
             db.session.add(new_set)
             db.session.commit()
-            return redirect(url_for('sets/set_name'))
+            return redirect(url_for('specific_sets', name=name))  # Pass 'name' as a parameter
         except Exception as e:
             print(f"Error: {e}")
-            return "check console"
+            return "Check the console"
     else:
-        render_sets = set_list.query.order_by(set_list.id)
-    return render_template('createSet.html')
+        render_sets = set_list.query.order_by(set_list.set_id)
+        return render_template('createSet.html')
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
-@app.route('/sets/<string:name>', methods=['GET','POST'])
-def specificSets():
+@app.route('/sets/<name>', methods=['GET','POST'])
+def specific_sets(name):
     if request.method == "POST":
 
         #grabs term and definition
@@ -85,7 +83,7 @@ def specificSets():
         try:
             db.session.add(pair)
             db.session.commit()
-            return redirect(url_for('specificSets'))
+            return redirect(url_for('specific_sets'))
         except Exception as e:
             print(f"Error: {e}")
             return "so like, we messed up big time"
@@ -117,7 +115,7 @@ def editPair(id, set_name):
 
 #deletes a pair
 @app.route('/delete/<int:id>')
-def deletePari(id):
+def deletePair(id):
     deletePair = Term.query.get_or_404(id)
     try:
         db.session.delete(deletePair)
