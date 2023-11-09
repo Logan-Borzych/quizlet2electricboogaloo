@@ -25,6 +25,9 @@ class set_list(db.Model):
     set_id = db.Column(db.Integer, primary_key=True)
     set_name = db.Column(db.String, nullable=False)
 
+    def __repr__(self):
+        return '<name %r>' % self.id
+
 
 #ROUTES TO RENDER WEBPAGE AND DETERMINE ROUTES FOR WEBPAGES
 
@@ -59,18 +62,18 @@ def create_set():
         try:
             db.session.add(new_set)
             db.session.commit()
-            return redirect(url_for('sets/set_name'))
+            print(redirect(url_for('specific_sets', name=set_name)))
         except Exception as e:
             print(f"Error: {e}")
             return "check console"
     else:
-        render_sets = set_list.query.order_by(set_list.id)
+        render_sets = set_list.query.order_by(set_list.set_id)
     return render_template('createSet.html')
 
 #currently goes to flashcard page ----------- in future i think we should split
 #                                             this into term creation and flashcards
 @app.route('/sets/<string:name>', methods=['GET','POST'])
-def specificSets():
+def specific_sets(name):
     if request.method == "POST":
 
         #grabs term and definition
@@ -85,7 +88,7 @@ def specificSets():
         try:
             db.session.add(pair)
             db.session.commit()
-            return redirect(url_for('specificSets'))
+            return redirect(url_for('specific_sets'))
         except Exception as e:
             print(f"Error: {e}")
             return "so like, we messed up big time"
