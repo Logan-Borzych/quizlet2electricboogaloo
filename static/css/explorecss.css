@@ -5,10 +5,10 @@
   /*========== Colors ==========*/
   /*Color mode HSL(hue, saturation, lightness)*/
   --first-color: hsl(222, 80%, 58%);
-  --dark-color: hsl(222, 24%, 8%);
-  --title-color: hsl(222, 8%, 8%);
-  --text-color-light: hsl(222, 8%, 65%);
-  --white-color: #fff;
+  --dark-color: hsl(228, 33%, 97%);
+  --title-color: hsl(220, 11%, 95%);
+  --text-color-light: hsl(223, 71%, 61%);
+  --white-color: rgb(191, 212, 250);
   --body-color: hsl(222, 100%, 99%);
   /*========== Font and typography ==========*/
   /*.5rem = 8px | 1rem = 16px ...*/
@@ -45,7 +45,7 @@ body {
   width: 76px;
   height: 76px;
   background-color: var(--white-color);
-  box-shadow: 0 4px 24px hsla(222, 68%, 12%, 0.1);
+  box-shadow: 0 4px 24px hsla(194, 91%, 54%, 0.938);
   border-radius: 4rem;
   padding: 10px;
   overflow: hidden;
