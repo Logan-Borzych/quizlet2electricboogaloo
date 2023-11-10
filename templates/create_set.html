@@ -1,9 +1,9 @@
 {% extends "base.html" %} 
-{% block title %}{% endblock %}
+{% block title %}Create a Set{% endblock %}
 {% block content %}
 <body>
     <h1>Create New Set</h1>
-    <form>
+    <form action="{{ url_for('create_set')}}" method="POST">
         <input type="text" placeholder="Set Name" name="name">
         <input type="submit" value="Create Set" class="button">
     </form>
