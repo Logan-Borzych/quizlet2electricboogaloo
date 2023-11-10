@@ -116,13 +116,13 @@ def edit_pair(term_id, set_id):
         pairToUpdate.setName = request.form['setName']
         try:
             db.session.commit()
-            return redirect(url_for('specific_set', set_id=set_id))
+            return redirect(url_for('specific_sets', set_id=set_id, term_id=term_id))
         except Exception as e:
             print(f"Error: {e}")
             return "Oops"
     else:
         # Activates upon arrival to the page
-        return render_template('editPair.html', Term=pairToUpdate)
+        return render_template('editPair.html', term=pairToUpdate)
 
 #deletes a pair
 @app.route('/sets/<int:set_id>/delete/<int:term_id>')
