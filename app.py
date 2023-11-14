@@ -105,24 +105,26 @@ def specific_sets(set_id):
 
 #allows the user to update their database entry
 @app.route('/sets/<string:set_id>/edit/<int:term_id>', methods=['GET', 'POST'])
-def edit_pair(term_id, set_id):
+def edit_pair(set_id, term_id):
     # Requests the database entry for the pair that the user wants to update
-    pairToUpdate = Term.query.get_or_404(term_id)
+    pair_to_update = Term.query.get_or_404(term_id)
 
-    # When the user edits the pair, commit to the database
     if request.method == "POST":
-        pairToUpdate.term = request.form['term']
-        pairToUpdate.definition = request.form['definition']
-        pairToUpdate.setName = request.form['setName']
+        # Update the pair with the form data
+        pair_to_update.term = request.form['term']
+        pair_to_update.definition = request.form['definition']
+
         try:
+            # Commit changes to the database
             db.session.commit()
-            return redirect(url_for('specific_set', set_id=set_id))
+            # Redirect to the specific_sets route
+            return redirect(url_for('specific_sets', set_id=set_id))
         except Exception as e:
             print(f"Error: {e}")
             return "Oops"
     else:
-        # Activates upon arrival to the page
-        return render_template('editPair.html', Term=pairToUpdate)
+        # Render the edit form when it's a GET request
+        return render_template('editPair.html', term=pair_to_update, set_id=set_id)
 
 #deletes a pair
 @app.route('/sets/<int:set_id>/delete/<int:term_id>')
@@ -131,7 +133,7 @@ def delete_pair(term_id, set_id):
     try:
         db.session.delete(delete_pair)
         db.session.commit()
-        return redirect(url_for('specific_set', set_id=set_id))
+        return redirect(url_for('specific_sets', set_id=set_id))
     except Exception as e:
         print(f"Error: {e}")
         return "Oops"

@@ -5,8 +5,9 @@
         <h1>Change term or def</h1>
         <br/>
         <form action="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" method="POST">
-            <input type="text" placeholder="Term" name="term" value="{{ Term.term }}">
-            <input type="text" placeholder="Definition" name="definition" value="{{ Term.definition }}">            <input type="submit" value="Edit Term" class="button">
+            <input type="text" placeholder="Term" name="term" value="{{ term.term }}">
+            <input type="text" placeholder="Definition" name="definition" value="{{ term.definition }}">
+            <input type="submit" value="Edit Term" class="button">
         </form>
     </div>
 {% endblock %}
