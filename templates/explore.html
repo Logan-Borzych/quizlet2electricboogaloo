@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends base.html %}
+{% block title %}{% endblock %}
+{% block content %}
+<body>
+    <form action="{{ url_for('search_explore')}}" method="POST">
+        <input type="text" placeholder="Search Sets" name="query">
+        <button type="submit">SUBMIT NOW</button>
+    </form>
 
-        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-
-        <link rel="stylesheet" href="../static/css/explorecss.css">
-
-        <title>Animated search bar - Bedimcode</title>
-    </head>
-    <body>
-        <div class="search-wrapper">
-            <label for="search">Search Users</label>
-            <input type="search" id="search" data-search>
-          </div>
-          
-        <div class="container">
-            <form action="https://www.google.com/search" class="search" id="search-bar">
-                <input type="search" placeholder="Type something..." name="q" class="search__input">
-    
-                <div class="search__button" id="search-button">
-                    <i class="ri-search-2-line search__icon"></i>
-                    <i class="ri-close-line search__close"></i>
-                </div>
-            </form>
-        </div>
-
-        <script src="../static/js/explorejs.js"></script>
-    </body>
-</html>
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul>
+            {% for result in results %}
+                <li>{{ result.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+{% endblock %}

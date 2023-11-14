@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, logging
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from datetime import datetime
 import logging
 app = Flask(__name__)
@@ -154,9 +155,19 @@ def login():
 def signup():
     return render_template('signup.html')
 
-@app.route('/explore', methods=['GET', 'POST'])
-def explore():
-    return render_template('explore.html')
+@app.route('/explore', methods=['GET'])
+def explore(results):
+    results = []
+    return render_template('explore.html', results=results)
+
+
+@app.route('/explore/search', methods=['POST'])
+def search_explore():
+    query = request.form.get('query')
+    results = Set.query.filter(or_(
+        Set.name.ilike(f"%{query}%")
+    )).all()
+    return render_template('explore.html', results=results)
 
 if __name__ == '__main__':
     with app.app_context():
