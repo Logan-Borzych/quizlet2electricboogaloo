@@ -156,7 +156,7 @@ def signup():
     return render_template('signup.html')
 
 @app.route('/explore', methods=['GET'])
-def explore(results):
+def explore():
     results = []
     return render_template('explore.html', results=results)
 
