@@ -70,11 +70,16 @@ def create_set():
     else:
         return render_template('create_set.html')
 
+@app.route('/sets', methods=['GET', 'POST'])
+def sets_main():
+    if request.method == 'POST':
+        query = request.form.get('query', '')
+        sets = Set.query.filter(Set.name.ilike(f'%{query}%')).all()
+        return render_template('sets_main.html', sets=sets, query=query)
+    else:
+        # Render the initial sets_main page
+        return render_template('sets_main.html', sets=None, query=None)
 
-
-
-#currently goes to flashcard page ----------- in future i think we should split
-#                                             this into term creation and flashcards
 @app.route('/sets/<int:set_id>', methods=['GET', 'POST'])
 def specific_sets(set_id):
     if request.method == "POST":
