@@ -1,3 +1,5 @@
+// Javascript needed to make the matching feature functional (Dragging/Dropping)
+
 const draggableElements = document.querySelectorAll(".draggable");
 const droppableElements = document.querySelectorAll(".droppable");
 
@@ -25,19 +27,19 @@ function dragStart(event) {
 //Events fired on the drop target
 
 function dragEnter(event) {
-  if(!event.target.classList.contains("dropped")) {
+  if (!event.target.classList.contains("dropped")) {
     event.target.classList.add("droppable-hover");
   }
 }
 
 function dragOver(event) {
-  if(!event.target.classList.contains("dropped")) {
+  if (!event.target.classList.contains("dropped")) {
     event.preventDefault(); // Prevent default to allow drop
   }
 }
 
 function dragLeave(event) {
-  if(!event.target.classList.contains("dropped")) {
+  if (!event.target.classList.contains("dropped")) {
     event.target.classList.remove("droppable-hover");
   }
 }
@@ -48,7 +50,7 @@ function drop(event) {
   const draggableElementData = event.dataTransfer.getData("text"); // Get the dragged data. This method will return any data that was set to the same type in the setData() method
   const droppableElementData = event.target.getAttribute("data-draggable-id");
   const isCorrectMatching = draggableElementData === droppableElementData;
-  if(isCorrectMatching) {
+  if (isCorrectMatching) {
     const draggableElement = document.getElementById(draggableElementData);
     event.target.classList.add("dropped");
     // event.target.style.backgroundColor = draggableElement.style.color; // This approach works only for inline styles. A more general approach would be the following: 
