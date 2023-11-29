@@ -1,3 +1,5 @@
+// Javascript needed to make flashcard page functional (Adding/Altering Database)
+
 var contentArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
 
 document.getElementById("save_card").addEventListener("click", () => {
@@ -44,7 +46,7 @@ flashcardMaker = (text, delThisIndex) => {
   flashcard.appendChild(del);
 
   flashcard.addEventListener("click", () => {
-    if(answer.style.display == "none")
+    if (answer.style.display == "none")
       answer.style.display = "block";
     else
       answer.style.display = "none";
@@ -60,8 +62,8 @@ addFlashcard = () => {
   const answer = document.querySelector("#answer");
 
   let flashcard_info = {
-    'my_question' : question.value,
-    'my_answer'  : answer.value
+    'my_question': question.value,
+    'my_answer': answer.value
   }
 
   contentArray.push(flashcard_info);

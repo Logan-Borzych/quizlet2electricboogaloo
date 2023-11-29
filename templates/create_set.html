@@ -1,6 +1,10 @@
-{% extends "base.html" %} 
+<!-- Gives option to input a set name, if sumbited a set will be made in set
+database and you will be sent to that set's website -->
+
+{% extends "base.html" %}
 {% block title %}Create a Set{% endblock %}
 {% block content %}
+
 <body>
     <h1>Create New Set</h1>
     <form action="{{ url_for('create_set')}}" method="POST">
