@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
-body {
+.index {
 	margin: 0;
-	background: rgb(219, 234, 238);
+	background: rgb(209, 228, 233);
 	font-family: 'Work Sans', sans-serif;
 	font-weight: 800;
 }
 
 .container {
-	width: 70%;
+	width: 100%;
 	margin: 50 auto;
 }
 
@@ -28,6 +28,7 @@ nav {
   float: left;
   justify-content: space-between;
   padding: 10px;
+  
 
 
 }
