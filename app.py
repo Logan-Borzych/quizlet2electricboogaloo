@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, logging
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from fuzzywuzzy import fuzz, process
+from fuzzywuzzy import process
 import logging
 app = Flask(__name__)
 
@@ -78,14 +77,11 @@ def sets_main():
     if request.method == 'POST':
         query = request.form.get('query', '')
         all_sets = Set.query.all()
-
         # Use fuzzy matching to find sets with names similar to the query
         sets_with_scores = [(set_obj, process.extractOne(query, [set_obj.name])) for set_obj in all_sets]
-
         # Filter out sets with a score below a certain threshold (e.g., 70)
-        threshold = 70
+        threshold = 0
         sets = [set_obj for set_obj, score in sets_with_scores if score[1] >= threshold]
-
         # Perform an exact match check
         exact_matches = Set.query.filter_by(name=query).all()
         sets_with_scores += [(set_obj, (100, 0)) for set_obj in exact_matches]
