@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, logging
 from flask_sqlalchemy import SQLAlchemy
 from fuzzywuzzy import process
+from flask_migrate import Migrate
 import logging
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terms.db'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 #to start app use "python app.py" in the command line
@@ -160,8 +162,14 @@ def delete_pair(term_id, set_id):
     
 
 #matching game page
-@app.route('/match', methods=['GET', 'POST'])
-def match():
+@app.route('/match/<int:set_id>', methods=['GET', 'POST'])
+def match(set_id):
+    set_data = Set.query.get_or_404(set_id)
+    
+    return render_template('match_main.html')
+
+@app.route('/match_old', methods=['GET', 'POST'])
+def match_old():
     return render_template('matching.html')
 
 #login page
@@ -184,4 +192,4 @@ if __name__ == '__main__':
     
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    app.run()
+    app.run(debug=True)

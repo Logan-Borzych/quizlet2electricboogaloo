@@ -13,6 +13,7 @@
             <input type="text" placeholder="Definition" name="definition">
             <input type="submit" value="Add Term" class="button">
         </form>
+        <button class="btn_game"><a href="{{ url_for('match', set_id=set_id)}}">Match</a></button>
         <br />
         {% for term in set_data.terms %}
         <p>

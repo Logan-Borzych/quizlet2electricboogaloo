@@ -6,3 +6,11 @@ As of 10/27/2023 this includes:
 - Matching Page
 - Login + Signup Page
 - "Create" tab Page
+
+
+extending base:
+{% extends base.html %}
+{% block top_css %}{% endblock %}
+{% block bottom_css %}{% endblock %}
+{% block title %}{% endblock %}
+{% block content %}{% endblock %}
