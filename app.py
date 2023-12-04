@@ -159,6 +159,33 @@ def delete_pair(term_id, set_id):
     except Exception as e:
         print(f"Error: {e}")
         return "Oops"
+
+@app.route('/')
+def index():
+    # Fetch sets from the database
+    sets = get_sets_from_database()
+    return render_template('index.html', sets=sets)
+
+@app.route('/delete_set/<int:set_id>', methods=['POST'])
+def delete_set(set_id):
+    # Delete set from the database
+    delete_set_from_database(set_id)
+    return redirect('/')
+
+def get_sets_from_database():
+    # Fetch sets from the database
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM sets')
+        sets = cursor.fetchall()
+    return sets
+
+def delete_set_from_database(set_id):
+    # Delete set from the database
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM sets WHERE id = ?', (set_id,))
+        conn.commit()
     
 
 #matching game page
