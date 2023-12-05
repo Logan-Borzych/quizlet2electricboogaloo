@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, logging
 from flask_sqlalchemy import SQLAlchemy
 from fuzzywuzzy import process
 from flask_migrate import Migrate
+from functions import *
 import logging
 app = Flask(__name__)
 
@@ -191,8 +192,10 @@ def delete_set_from_database(set_id):
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
 def match(set_id):
-    set_data = Set.query.get_or_404(set_id)
-    
+    print("Inside match route")
+    raw_set_data = Set.query.get_or_404(set_id)
+    app.logger.info(raw_set_data)
+
     return render_template('match_main.html')
 
 @app.route('/match_old', methods=['GET', 'POST'])
@@ -208,6 +211,10 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     return render_template('signup.html')
+
+@app.route('/flashcards', methods=['GET'])
+def flashcards():
+    return render_template('flashcards.html')
 
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():

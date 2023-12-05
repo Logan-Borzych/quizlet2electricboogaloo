@@ -16,8 +16,9 @@
     <section class="main-content blue">
       <h2>Main Content</h2>
       <p>
-        <a href="flashcards.html">Create Flashcards</a>
-        <a href="matching.html">Create Matching Cards</a>
+        <a href="{{ url_for('flashcards')}}">Create Flashcards</a>
+        <!--no longer match_old change to match after show and tell-->
+        <a href="{{ url_for('match_old')}}">Create Matching Cards</a>
       </p>
     </section>
 

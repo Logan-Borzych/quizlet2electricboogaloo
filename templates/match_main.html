@@ -1,4 +1,4 @@
-{% extends base.html %}
+{% extends "base.html" %}
 {% block top_css %}{% endblock %}
 {% block bottom_css %}{% endblock %}
 {% block title %}{% endblock %}
@@ -7,7 +7,8 @@
 <body>
 
     <section class="termBoxes">
-        {% for term in set_data.terms %}f
+        {% for term in set_data.terms %}
+
         {% endfor %}
     </section>
 
