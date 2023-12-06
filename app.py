@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, logging
 from flask_sqlalchemy import SQLAlchemy
 from fuzzywuzzy import process
+from flask_migrate import Migrate
+from functions import *
 import logging
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terms.db'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 #to start app use "python app.py" in the command line
@@ -157,11 +160,46 @@ def delete_pair(term_id, set_id):
     except Exception as e:
         print(f"Error: {e}")
         return "Oops"
+
+@app.route('/')
+def index():
+    # Fetch sets from the database
+    sets = get_sets_from_database()
+    return render_template('index.html', sets=sets)
+
+@app.route('/delete_set/<int:set_id>', methods=['POST'])
+def delete_set(set_id):
+    # Delete set from the database
+    delete_set_from_database(set_id)
+    return redirect('/')
+
+def get_sets_from_database():
+    # Fetch sets from the database
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM sets')
+        sets = cursor.fetchall()
+    return sets
+
+def delete_set_from_database(set_id):
+    # Delete set from the database
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM sets WHERE id = ?', (set_id,))
+        conn.commit()
     
 
 #matching game page
-@app.route('/match', methods=['GET', 'POST'])
-def match():
+@app.route('/match/<int:set_id>', methods=['GET', 'POST'])
+def match(set_id):
+    print("Inside match route")
+    raw_set_data = Set.query.get_or_404(set_id)
+    app.logger.info(raw_set_data)
+
+    return render_template('match_main.html')
+
+@app.route('/match_old', methods=['GET', 'POST'])
+def match_old():
     return render_template('matching.html')
 
 #login page
@@ -174,6 +212,10 @@ def login():
 def signup():
     return render_template('signup.html')
 
+@app.route('/flashcards', methods=['GET'])
+def flashcards():
+    return render_template('flashcards.html')
+
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
     return render_template('explore.html')
@@ -184,4 +226,4 @@ if __name__ == '__main__':
     
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    app.run()
+    app.run(debug=True)
