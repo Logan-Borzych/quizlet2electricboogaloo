@@ -1,8 +1,17 @@
 {% extends "base.html" %} 
 {% block title %}Sets Main{% endblock %}
 {% block content %}
+
+
     <div class="container">
         
+        <h1>Sets Main</h1>
+        <br/>
+        <form action="{{ url_for('sets_main') }}" method="POST">
+            <input type="text" placeholder="Search sets" name="query">
+            <input type="submit" value="Search" class="button">
+        </form>
+
         <!-- Display search results here -->
         {% if sets %}
             <h2>Search Results:</h2>
