@@ -4,12 +4,22 @@
 <body class="index"> 
     <header>         
         <div class="content">
-            <h1>BetterQuizlet</h1>
+            <h1>Better<span class = "auto-type"></span></h1>
             <div>
                 <button><a href = "{{ url_for('create')}}">Create</a></button>
                 <button><a href = "{{ url_for('explore')}}">Explore</a></button>
             </div>
         </div>    
+        <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+        <script>
+            var typed = new Typed(".auto-type",{
+                strings: ["Quizlet", "Experience", "Learning"],
+                typeSpeed: 150,
+                backSpeed: 150,
+                loop:true
+
+            })
+        </script>
     </header>
     <div class = "hero">
         <video autoplay loop muted plays-inline class = "back-video">
