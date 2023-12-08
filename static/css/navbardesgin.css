@@ -64,10 +64,9 @@ nav a {
   padding: 10px;
   width: 200px;
   height: 100px;
-  margin: 30px 150px;
-    top: -5px;
- 
-  
+  margin: 5px 90px;
+  position: relative;
+    top: -7px;
  }
 
 .back-video{
