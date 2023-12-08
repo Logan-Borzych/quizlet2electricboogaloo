@@ -87,7 +87,7 @@ nav a:hover::before {
 .content{
   width: 100%;
   position: absolute;
-  color: white;
+  color: rgb(246, 250, 252);
   top: 45%;
   transform: translateY(-50%);
   text-align: center;
@@ -98,17 +98,24 @@ nav a:hover::before {
   font-weight: 800;
 }
 button{
-  width: 200px;
+  color: inherit;
+    width: 200px;
   padding: 15px;
   margin: 20px 5px;
   text-align: center;
   border-radius: 25px;
-  color: black;
+  color: rgb(165, 201, 241);
   border: 2px;
   font-size: 20px;
   cursor: pointer;
   font-weight: 600;
 }
+.button1 a {
+  text-decoration: none !important;
+  color: inherit;
+
+}
+
 button:hover{
   background: rgb(0, 192, 226);
   transition: 0.5s;
@@ -117,7 +124,9 @@ button:hover{
   color: black;
 }
 
-  
+span{
+  color:lightskyblue;
+}
 
 
 *{
