@@ -4,19 +4,74 @@
 <body class="index"> 
     <header>         
         <div class="content">
-            <h1>BetterQuizlet</h1>
+            <h1>The Better Way To <span class = "auto-type"></span></h1>
             <div>
                 <button><a href = "{{ url_for('create')}}">Create</a></button>
                 <button><a href = "{{ url_for('explore')}}">Explore</a></button>
             </div>
         </div>    
+        <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+        <script>
+            var typed = new Typed(".auto-type",{
+                strings: ["Learn", "Teach", "Study"],
+                typeSpeed: 150,
+                backSpeed: 150,
+                loop:true
+
+            })
+        </script>
+       
     </header>
     <div class = "hero">
-        <video autoplay loop muted plays-inline class = "back-video">
+        <video autoplay loop muted plays-inline class = "back-video" id="videoPlayer">
             <source src = "../static/images/video.mp4" type = "video/mp4">
+            
+
         </video>
     </div>
+    <script>
+           
+        // Get the video element
+        var video = document.getElementById('videoPlayer');
 
+        // Array of video sources
+        var videoSources = [
+            "../static/images/video.mp4",
+            "../static/images/studying2.mp4",
+            "../static/images/studying3.mp4"
+            // Add more video sources as needed
+        ];
+
+        // Index to keep track of the current video
+        var currentVideoIndex = 0;
+
+        // Function to change video source
+        function changeVideoSource() {
+            
+
+            // Increment the index or reset to 0 if at the end
+            currentVideoIndex = (currentVideoIndex + 1) % videoSources.length;
+            // Change the video source
+            video.src = videoSources[currentVideoIndex];
+        }
+
+        video.addEventListener('timeupdate', function () {
+                // Check if 15 seconds have passed
+                if (video.currentTime >= 15) {
+                    // Change to the next video
+                    changeVideoSource();
+
+                    // Play the new video
+                    video.play();
+                      // Reset the timer
+                      video.currentTime = 0;
+                }
+        });
+
+        // Play the initial video
+        video.play();
+    
+</script>
     
 </body>
 {% endblock %}
