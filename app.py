@@ -98,6 +98,8 @@ def sets_main():
     else:
         # Render the initial sets_main page
         return render_template('sets_main.html', sets=None, query=None)
+
+        
 @app.route('/sets/<int:set_id>', methods=['GET', 'POST'])
 def specific_sets(set_id):
     if request.method == "POST":
