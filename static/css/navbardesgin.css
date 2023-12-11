@@ -92,6 +92,9 @@ nav a:hover::before {
   top: 45%;
   transform: translateY(-50%);
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .content h1{
   margin-top: 80px;
@@ -99,18 +102,18 @@ nav a:hover::before {
   font-weight: 800;
 }
 button{
-  color: inherit;
-    width: 200px;
-  padding: 15px;
-  margin: 20px 5px;
-  text-align: center;
-  border-radius: 25px;
-  background: linear-gradient(271.19deg,#4433F1 0%,#628EFF 100%),linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),#FFFFFF;
-
-  border: 2px;
-  font-size: 20px;
+  background: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
+  box-shadow: 0 16px 40px rgba(11,169,166,.16);
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  position: absolute;
+  top: 8px;
+  right: 8px;
   cursor: pointer;
-  font-weight: 600;
+  border: none;
+  border-radius: 50%;
+  transition: all ease 0.6s;
 }
 button a{
   text-decoration: none;
@@ -136,4 +139,62 @@ span{
 *{
   margin: 0;
   padding: 0;
+}
+
+
+.search-bar{
+  width: 100%;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 60px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 30%;
+  top: 100%;
+
+}
+.search-bar input{
+  background: transparent;
+  flex: 1;
+  border: 0;
+  outline: none;
+  padding: 24px 20px;
+  font-size: 20px;
+  color: #cac7ff;
+
+}
+.search-bar .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-image: url(/static/images/icon-search.svg);
+}
+.search-bar img{
+  max-width: 20px;
+}
+.search-bar button span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  right: 0;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(/static/images/icon-arrow-long-right.svg);
+}
+
+::placeholder{
+  color: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
+  display: flex;
+  text-align: center;
+
+
 }

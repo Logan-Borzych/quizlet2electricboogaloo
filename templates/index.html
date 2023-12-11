@@ -5,10 +5,18 @@
     <header>         
         <div class="content">
             <h1>The Better Way To <span class = "auto-type"></span></h1>
+            
             <div>
-                <button><a href = "{{ url_for('create')}}">Create</a></button>
-                <button><a href = "{{ url_for('explore')}}">Explore</a></button>
+                <form action = "" class = "search-bar">
+                <div class = "icon"></div>
+                <input type = "text" placeholder = "Search Sets" name = "q">
+                <button type = "submit"><span></span></button>
+               </form>
+      
+               <!-- <button><a href = "{{ url_for('create')}}">Create</a></button>
+                <button><a href = "{{ url_for('explore')}}">Explore</a></button>  !-->
             </div>
+            
         </div>    
         <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
         <script>
