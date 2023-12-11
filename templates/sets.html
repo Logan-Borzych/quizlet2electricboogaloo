@@ -7,14 +7,8 @@
 <body>
     <div class="container">
         <h1>term/definition</h1>
-        {% for set in sets %}
-        <div>
-            <form method="get" action="/delete_set/{{ set_id }}">
-                <button type="submit">Delete Set</button>
-            </form>
-        </div>
-        {% endfor %}
         <br />
+        <!-- Term Addition -->
         <form action="{{ url_for('specific_sets', set_id=set_id)}}" METHOD="POST">
             <input type="text" placeholder="Term" name="term">
             <input type="text" placeholder="Definition" name="definition">
@@ -24,11 +18,18 @@
         <br />
         {% for term in set_data.terms %}
         <p>
+            <!-- Term Modification / Deletion -->
             Term: {{ term.term }} Definition: {{ term.definition }}
             <a href="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" class="button"><button>Edit</button></a>
             <a href="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" class="button"><button>Delete</button></a>
         </p>
         {% endfor %}
+        <div>
+            <!-- Delete Set (Nonfunctional) -->
+            <form method="post" action="/delete_set/{{ set_id }}" class="button">
+                <button type="submit">Delete Set</button>
+            </form>
+        </div>    
     </div>
 </body>
 {% endblock %}

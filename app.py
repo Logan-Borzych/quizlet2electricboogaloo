@@ -25,7 +25,7 @@ class Term(db.Model):
 class Set(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    terms = db.relationship('Term', backref='set', lazy=True)
+    terms = db.relationship('Term', backref='set', cascade='all, delete-orphan', lazy=True)
 
 
 
@@ -98,8 +98,6 @@ def sets_main():
     else:
         # Render the initial sets_main page
         return render_template('sets_main.html', sets=None, query=None)
-
-        
 @app.route('/sets/<int:set_id>', methods=['GET', 'POST'])
 def specific_sets(set_id):
     if request.method == "POST":
@@ -177,7 +175,7 @@ def delete_set(set_id):
 
 def get_sets_from_database():
     # Fetch sets from the database
-    with sqlite3.connect(DATABASE) as conn:
+    with sqlite.connect(DATABASE) as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM sets')
         sets = cursor.fetchall()
@@ -185,11 +183,16 @@ def get_sets_from_database():
 
 def delete_set_from_database(set_id):
     # Delete set from the database
-    with sqlite3.connect(DATABASE) as conn:
-        cursor = conn.cursor()
-        cursor.execute('DELETE FROM sets WHERE id = ?', (set_id,))
-        conn.commit()
+        delete_set = Set.query.get_or_404(set_id)
+        db.session.delete(delete_set)
+        db.session.commit()
+        return redirect(url_for('index'))
     
+def delete_all_entries_for_set_id(set_id):
+    # Deletes flashcards for a set from the database
+        db.session.query(term).filter_by(set_id).delete()
+        db.session.commit()
+
 
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
