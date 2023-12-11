@@ -25,7 +25,7 @@ header::after {
 }
 
 nav {
-  background:  linear-gradient(271.19deg,#4433F1 0%,#628EFF 100%),linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),#FFFFFF;
+  background: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
   padding: 10px;
   width: 100%;
   display: flex;
@@ -95,6 +95,7 @@ nav a:hover::before {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(119, 186, 189)
 }
 .content h1{
   margin-top: 80px;
@@ -151,7 +152,7 @@ span{
   display: flex;
   justify-content: center;
   position: absolute;
-  left: 30%;
+  left: 20%;
   top: 100%;
 
 }
