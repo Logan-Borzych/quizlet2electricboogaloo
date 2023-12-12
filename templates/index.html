@@ -7,7 +7,7 @@
             <h1>The Better Way To <span class = "auto-type"></span></h1>
             
             <div>
-                <form action = "" class = "search-bar">
+                <form action = "{{ url_for('sets_main', query=q) }}" class = "search-bar">
                 <div class = "icon"></div>
                 <input type = "text" placeholder = "Search Sets" name = "q">
                 <button type = "submit"><span></span></button>
@@ -44,6 +44,7 @@
 
         // Array of video sources
         var videoSources = [
+            "../static/images/study4.mp4",
             "../static/images/video.mp4",
             "../static/images/studying2.mp4",
             "../static/images/studying3.mp4"
