@@ -14,3 +14,5 @@ extending base:
 {% block bottom_css %}{% endblock %}
 {% block title %}{% endblock %}
 {% block content %}{% endblock %}
+
+{% endblock %}

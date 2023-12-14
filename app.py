@@ -201,10 +201,15 @@ def delete_all_entries_for_set_id(set_id):
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
 def match(set_id):
     print("Inside match route")
-    raw_set_data = Set.query.get_or_404(set_id)
-    app.logger.info(raw_set_data)
+    
+    raw_set_data = Term.query.filter_by(set_id = set_id)
 
-    return render_template('match_main.html')
+    if raw_set_data.len() > 8:
+        set_data = random.sample(raw_set_data, 8)
+    else:
+        set_data = raw_set_data
+
+    return render_template('match_main.html', set_data)
 
 @app.route('/match_old', methods=['GET', 'POST'])
 def match_old():
