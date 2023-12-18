@@ -4,6 +4,9 @@ from fuzzywuzzy import process
 from flask_migrate import Migrate
 from functions import *
 import logging
+
+#fart
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///terms.db'
