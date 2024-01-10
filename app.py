@@ -4,6 +4,7 @@ from fuzzywuzzy import process
 from flask_migrate import Migrate
 from functions import *
 import logging
+import random
 
 #fart
 
@@ -196,7 +197,33 @@ def delete_all_entries_for_set_id(set_id):
         db.session.query(term).filter_by(set_id).delete()
         db.session.commit()
 
+#Quiz feature page
+@app.route('/quizSetUp/<int:set_id>', methods=['GET', 'POST'])
+def quizSetUp(set_id):
+    print("Inside quizSetUp route")
+    raw_set_data = Set.query.get_or_404(set_id)
+    app.logger.info(raw_set_data)
+    num_terms = Term.query.filter_by(set_id=set_id).count()
 
+    return render_template('quiz_SetUp.html', set_id=set_id, set_data=raw_set_data, num_terms=num_terms)
+
+@app.route('/quiz/<int:set_id>/<int:amount_of_questions>', methods=['GET', 'POST'])
+def quiz(set_id, amount_of_questions):
+    print("Inside quiz route")
+    raw_set_data = Set.query.get_or_404(set_id)
+    app.logger.info(raw_set_data)
+
+    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, amount_of_questions=amount_of_questions)
+
+def questionCreate(set_id, flashcard_id):
+    #Random Num Range (For Wrong Answers)
+    min_number = 1
+    right_answer_id = flashcard_id
+    max_number = Term.query.filter_by(set_id=set_id).count()
+    random_numbers = random.sample([number for number in range(min_number, max_number + 1) if number != excluded_number], 2)
+    random_numbers.append(excluded_number)
+    random.shuffle(random_numbers)
+    
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
 def match(set_id):

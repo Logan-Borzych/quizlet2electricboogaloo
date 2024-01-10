@@ -12,20 +12,22 @@
         <form action="{{ url_for('specific_sets', set_id=set_id)}}" METHOD="POST">
             <input type="text" placeholder="Term" name="term">
             <input type="text" placeholder="Definition" name="definition">
-            <input type="submit" value="Add Term" class="button">
+            <input type="submit" value="Add Term" class="smallButton">
         </form>
-        <button class="btn_game"><a href="{{ url_for('match', set_id=set_id)}}">Match</a></button>
+        <smallButton class="btn_game"><a href="{{ url_for('match', set_id=set_id)}}">Match</a></smallButton>
+        <smallButton><a href="/quizSetUp/{{ set_id }}">Quiz</a></smallButton>
+
         <br />
         {% for term in set_data.terms %}
         <p>
             <!-- Term Modification / Deletion -->
             Term: {{ term.term }} Definition: {{ term.definition }}
-            <a href="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" class="button"><button>Edit</button></a>
-            <a href="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" class="button"><button>Delete</button></a>
+            <a href="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" class="button"><smallButton>Edit</smallButton></a>
+            <a href="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" class="button"><smallButton>Delete</smallButton></a>
         </p>
         {% endfor %}
         <div>
-            <!-- Delete Set (Nonfunctional) -->
+            <!-- Delete Set -->
             <form method="post" action="/delete_set/{{ set_id }}" class="button">
                 <button type="submit">Delete Set</button>
             </form>
