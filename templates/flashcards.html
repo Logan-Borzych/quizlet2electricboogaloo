@@ -1,50 +1,62 @@
 <!-- Flashcard page, where you can create, edit and delete cards from a set -->
 
-{% extends "base.html" %}
-{% block title %}{% endblock %}
-{% block content %}
 
-<body>
-
-  <main>
-
-    <header>
-      <div class="container">
-        <div id="header">
-          <h1>Flashcards</h1>
-          <div>
-            <button id="show_card_box">Add Card</button>
-            <button id="delete_cards">Del Cards</button>
-          </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcard App</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../static/css/flashcardscss.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="add-flashcard-con">
+        <button id="add-flashcard">Add Flashcard</button>
+      </div>
+      <!-- Display Card of Question And Answers Here -->
+      <div id="card-con">
+        <div class="card-list-container"></div>
+      </div>
+    </div>
+    <!-- Input form for users to fill question and answer -->
+    <div class="question-container hide" id="add-question-card">
+      <h2>Add Flashcard</h2>
+      <div class="wrapper">
+        <!-- Error message -->
+        <div class="error-con">
+          <span class="hide" id="error">Input fields cannot be empty!</span>
         </div>
+        <!-- Close Button -->
+        <i class="fa-solid fa-xmark" id="close-btn"></i>
       </div>
-    </header>
-
-    <section>
-      <div class="container">
-        <div id="create_card">
-          <h2>Create Flashcard</h2>
-          <!---FIX THIS SO IT ALIGNS WITH MODERN STANDARDS FOR HTML, THE CURRENT CODE IS NOT FIT FOR CURRENT USE-->
-          <label for="question">Question</label>
-          <textarea id="question" maxlength="280"></textarea>
-          <label for="answer" maxlength="280">Answer</label>
-          <br>
-          <textarea id="answer"></textarea>
-          <div>
-            <button id="save_card">Save</button> <button id="close_card_box">Close</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <div id="flashcards"></div>
-      </div>
-    </section>
-
-  </main>
-
-  <script src="../static/js/flashcardScript.js"></script>
-</body>
-{% endblock %}
+      <label for="question">Question:</label>
+      <textarea
+        class="input"
+        id="question"
+        placeholder="Type the question here..."
+        rows="2"
+      ></textarea>
+      <label for="answer">Answer:</label>
+      <textarea
+        class="input"
+        id="answer"
+        rows="4"
+        placeholder="Type the answer here..."
+      ></textarea>
+      <button id="save-btn">Save</button>
+    </div>
+    <!-- Script -->
+    <script src="../static/js/flashcardsjs.js"></script>
+  </body>
+</html>

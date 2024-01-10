@@ -154,6 +154,7 @@ span{
   position: absolute;
   left: 20%;
   top: 100%;
+  text-align:center;
 
 }
 .search-bar input{
