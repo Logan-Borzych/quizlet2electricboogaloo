@@ -5,11 +5,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #eee;
-  color: #111;
-}
 
 .draggable-elements {
   display: flex;
@@ -45,6 +40,7 @@ body {
   border: 3px dashed #000000;
   transition: border-width 0.2s, transform 0.2s, background-color 0.9s;
 }
+
 .droppable span {
   font-size: 1.25rem;
   pointer-events: none; /* The element is never the target of pointer events */
@@ -75,6 +71,10 @@ body {
 }
 .draggable.dragged:hover {
   opacity: 0.1;
+}
+
+.feef {
+  color:#000000
 }
 
 @media (max-width: 600px) {

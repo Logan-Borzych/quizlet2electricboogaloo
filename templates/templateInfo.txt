@@ -12,6 +12,7 @@ extending base:
 {% extends base.html %}
 {% block top_css %}{% endblock %}
 {% block bottom_css %}{% endblock %}
+{% block js %}{% endblock %}
 {% block title %}{% endblock %}
 {% block content %}{% endblock %}
 
