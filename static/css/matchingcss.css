@@ -28,11 +28,11 @@
 .droppable {
   height: 6.5rem;
   width: 6.5rem;
-  margin: 1rem auto;
+  margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: horizontal;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
   text-align: center;
   font-size: 4rem;
   font-weight: bold;
