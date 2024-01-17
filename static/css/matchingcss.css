@@ -8,7 +8,7 @@
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: #eee;
-  color: #111;
+  color: rgb(110, 49, 49);
 }
 
 .draggable-elements {

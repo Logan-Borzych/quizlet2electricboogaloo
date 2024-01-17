@@ -1,0 +1,5 @@
+<h1>Please select the amount of questions you want in your quiz</h1>
+
+{% for divisor in [1, 2, 3, 4] %}
+    <buttonSmall><a href="/quiz/{{ set_id }}/{{ num_terms // divisor }}">{{ num_terms // divisor }} Questions</a></buttonSmall>
+{% endfor %}
