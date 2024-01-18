@@ -1,14 +1,23 @@
 {% extends "base.html" %}
-{% block top_css %}{% endblock %}
+{% block top_css %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/allcss">
+    <link rel="stylesheet" href="../static/css/matchingcss.css">
+{% endblock %}
 {% block bottom_css %}{% endblock %}
 {% block title %}{% endblock %}
+{% block js %}<script src="../static/js/matchingjs.js" defer></script>{% endblock %}
 {% block content %}
 
 <body>
 
-    <section class="termBoxes">
-        {% for term in set_data.terms %}
-
+    <section class="draggable-elements">
+        {% for term in set_data %}
+            <h1 class="draggable" draggable="true" alt="{{ term.term }}" id="{{ term.term }}">{{ term.term }}</h1>
+        {% endfor %}
+    </section>
+    <section class="droppable-elements">
+        {% for term in set_data %}
+            <div class="droppable" data-draggable-id="{{ term.term }}"><span class="feef">{{ term.definition }}</span></div>
         {% endfor %}
     </section>
 

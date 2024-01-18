@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, logging
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from fuzzywuzzy import process
 from flask_migrate import Migrate
-from functions import *
+from typing import List
 import logging
 import random
+import sqlite3
 
 #fart
 
@@ -226,12 +227,25 @@ def questionCreate(set_id, flashcard_id):
     
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
-def match(set_id):
+def match(set_id: int) -> str:
     print("Inside match route")
-    raw_set_data = Set.query.get_or_404(set_id)
-    app.logger.info(raw_set_data)
 
-    return render_template('match_main.html')
+    # Fetch raw set data from the database based on the set_id
+    raw_set_data: List[Term] = Term.query.filter_by(set_id=set_id).all()
+
+    # Check if the number of terms is greater than 8
+    if len(raw_set_data) > 8:
+        # If there are more than 8 terms, select a random sample of 8 terms
+        set_data = random.sample(raw_set_data, 8)
+    else:
+        # If there are 8 or fewer terms, use all of them
+        set_data = raw_set_data
+
+    # The variable 'set_data' now contains a list of Term objects for further processing
+
+    # Add your additional logic or processing here as needed
+
+    return render_template('match_main.html', set_data=set_data)
 
 @app.route('/match_old', methods=['GET', 'POST'])
 def match_old():
