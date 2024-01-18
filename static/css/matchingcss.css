@@ -5,6 +5,11 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #eee;
+  color: rgb(110, 49, 49);
+}
 
 .draggable-elements {
   display: flex;
