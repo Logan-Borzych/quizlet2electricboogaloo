@@ -2,10 +2,11 @@
 {% block top_css %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/allcss">
     <link rel="stylesheet" href="../static/css/matchingcss.css">
+    <script src="../static/js/matchingjs.js" defer></script>
 {% endblock %}
 {% block bottom_css %}{% endblock %}
 {% block title %}{% endblock %}
-{% block js %}<script src="../static/js/matchingjs.js" defer></script>{% endblock %}
+{% block js %}{% endblock %}
 {% block content %}
 
 <body>
@@ -20,7 +21,19 @@
             <div class="droppable" data-draggable-id="{{ term.term }}"><span class="feef">{{ term.definition }}</span></div>
         {% endfor %}
     </section>
-
+    <div class = "splash">
+        <h1 class = "splash-header">START MATCHING</h1>
+    </div>
+    <div id="js_timer">
+        <div class = "stopwatchimg">
+        <img src="../static/images/stopwatch.png" alt="Again" style="width:3%;">
+    </div>
+        <div id="timer">
+           
+          00:00
+        </div>
+        
+      <div>
 </body>
 
 {% endblock %}
