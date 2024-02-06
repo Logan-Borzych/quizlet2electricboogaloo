@@ -1,0 +1,11 @@
+<h1>Quiz Results for {{ set_data.name }}</h1>
+{% for result in results %}
+    <div>
+        <p>Question:</p>
+        {% if result.correct %}
+            <p>Correct! You answered: {{ definitions[result.question_id] }}</p>
+        {% else %}
+            <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ definitions[result.question_id] }}</p>
+        {% endif %}
+    </div>
+{% endfor %}

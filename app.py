@@ -196,7 +196,7 @@ def delete_all_entries_for_set_id(set_id):
     # Deletes flashcards for a set from the database
         db.session.query(term).filter_by(set_id).delete()
         db.session.commit()
-
+    
 #Quiz feature page
 @app.route('/quizSetUp/<int:set_id>', methods=['GET', 'POST'])
 def quizSetUp(set_id):
@@ -212,18 +212,66 @@ def quiz(set_id, amount_of_questions):
     print("Inside quiz route")
     raw_set_data = Set.query.get_or_404(set_id)
     app.logger.info(raw_set_data)
+    #Creates the list of flashcard ids that will be used for the quiz
+    max_number = Term.query.filter_by(set_id=set_id).count()
+    question_ids = random.sample(range(1, max_number + 1), amount_of_questions)
+    random.shuffle(question_ids)
+    questions = [{"id": question_id, "data": questionCreate(set_id, question_id)} for question_id in question_ids]
+    terms_data = Term.query.filter_by(set_id=set_id).all()
+    term_names = [term.term for term in terms_data]
+    definitions = [term.definition for term in terms_data]
+    app.logger.info("Term Names: %s", term_names)
+    app.logger.info("Definitions: %s", definitions)
+    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
 
-    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, amount_of_questions=amount_of_questions)
+@app.route('/quiz/<int:set_id>/', methods=['GET', 'POST'])
+def quizCustomRoute(set_id):
+    print("Inside quiz route")
+    raw_set_data = Set.query.get_or_404(set_id)
+    app.logger.info(raw_set_data)
+    #Creates the list of flashcard ids that will be used for the quiz
+    max_number = Term.query.filter_by(set_id=set_id).count()
+    #Pulls answer given for amount of questions
+    amount_of_questions = int(request.form.get('question_slide'))
+    question_ids = random.sample(range(1, max_number + 1), amount_of_questions)
+    random.shuffle(question_ids)
+    questions = [{"id": question_id, "data": questionCreate(set_id, question_id)} for question_id in question_ids]
+    terms_data = Term.query.filter_by(set_id=set_id).all()
+    term_names = [term.term for term in terms_data]
+    definitions = [term.definition for term in terms_data]
+    app.logger.info("Term Names: %s", term_names)
+    app.logger.info("Definitions: %s", definitions)
+    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
 
 def questionCreate(set_id, flashcard_id):
-    #Random Num Range (For Wrong Answers)
-    min_number = 1
-    right_answer_id = flashcard_id
+    #Creates the list of flaschard ids that wil be used in a question
+    right_answer_id = flashcard_id - 1
     max_number = Term.query.filter_by(set_id=set_id).count()
-    random_numbers = random.sample([number for number in range(min_number, max_number + 1) if number != excluded_number], 2)
-    random_numbers.append(excluded_number)
-    random.shuffle(random_numbers)
-    
+    wrong_answers = random.sample([number for number in range(1, max_number + 1) if number != right_answer_id + 1], 3)
+    wrong_answers.append(right_answer_id + 1)
+    random.shuffle(wrong_answers)
+
+    return wrong_answers, right_answer_id
+
+@app.route('/quizResults/<int:set_id>', methods=['POST'])
+def quizResults(set_id):
+    raw_set_data = Set.query.get_or_404(set_id)
+    terms_data = Term.query.filter_by(set_id=set_id).all()
+    definitions = [term.definition for term in terms_data]
+    user_answers = {key.split('_')[1]: int(value) for key, value in request.form.items() if key.startswith('answers')}
+    results = []
+    for question_id, user_answer in user_answers.items():
+        right_answer_id = int(question_id)
+        correct_answer = definitions[right_answer_id]
+        if user_answer == right_answer_id + 1:
+           results.append({"question_id": int(question_id), "correct": True, "user_answer": correct_answer, "correct_answer": correct_answer})
+        else:
+           results.append({"question_id": int(question_id), "correct": False, "user_answer": definitions[user_answer - 1], "correct_answer": correct_answer})
+    app.logger.info("Form Data: %s", request.form)
+    app.logger.info("User Answers: %s", user_answers)
+    app.logger.info("Results: %s", results)
+    return render_template('quizResults.html', set_id=set_id, results=results, set_data=raw_set_data, definitions=definitions)
+
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
 def match(set_id):

@@ -1,3 +1,14 @@
-<h1>Quiz</h1>
-
-<input type="button">
+<form method="post" action="/quizResults/{{ set_id }}" name="quiz">
+    <h1>Quiz on {{ set_data.name }}</h1>
+    {% for question in questions %}
+        <div>
+            <p>Definition for {{ term_names[question.data[1]] }}?</p>
+            {% for answer in question.data[0] %}
+                <input type="radio" id="{{ term_names[question.data[1]] }}_{{ answer }}" name="answers_{{ question.data[1] }}" value="{{ answer }}">
+                <label for="{{ term_names[question.data[1]] }}_{{ answer }}">{{ definitions[answer - 1] }}</label><br>
+            {% endfor %}
+            <p>Right Answer: {{ definitions[question.data[1]] }}</p>
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
