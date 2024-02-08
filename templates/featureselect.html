@@ -1,8 +1,6 @@
 <!-- Features page, does not have functionality -->
 
 {% extends "base.html" %}
-{% block top_css %}{% endblock %}
-{% block bottom_css %}{% endblock %}
 {% block title %}Features{% endblock %}
 {% block content %}
 
@@ -10,43 +8,12 @@
     <div class="container">
         <nav>
             <u1 class="primary-nav">
-                <li><a href="{{ url_for('flashcards')}}">Flashcards</a></li>
+                <li><a href="{{ url_for('sets_main')}}">Flashcards</a></li>
                 <li><a href="#">Quiz</a></li>
                 <!--match old is a temp fix-->
                 <li><a href="{{ url_for('match_old')}}">Matching</a></li>
             </u1>
         </nav>
     </div>
-    <div class = "mainbuttons">
-        <div>
-            <button><a href = "{{ url_for('create')}}">Create</a></button>
-              <button><a href = "{{ url_for('explore')}}">Explore</a></button>  
-        </div>
-    </div>
-    <div class = "col">
-        <div class = "card1">
-            <img src="../static/images/flashcardsagain.png" alt="Again" style="width:75%;">
-            <h5><a href = "login.html">Practice Again</a></h5>
-            <p>See cards that you have practiced in the past</p>
-        </div>
-        <div class = "card2">
-            <img src="../static/images/whatyoumissed.png" alt="Again" style="width:75%;">
-            <h5>What You Missed</h5>
-            <p>Practice terms you missed from previous sets</p>
-        </div>
-        <div class = "card3">
-            <img src="../static/images/popularterms.png" alt="Again" style="width:75%;">
-            <h5>Popular Terms</h5>
-            <p>Check out some terms best suited for you</p>
-        </div>
-        <div class = "card4">
-         <img src="../static/images/testwhatyouknow2.png" alt="Again" style="width:75%;">
-            <h5>Test your knowledge</h5>
-            <p>Test what you know with a quiz of jumbled up questions</p>
-        </div>
-
-    </div>
-    
-    <script src="../static/js/explorejs.js"></script>
 </body>
 {% endblock %}

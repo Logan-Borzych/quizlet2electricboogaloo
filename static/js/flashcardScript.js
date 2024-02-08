@@ -14,7 +14,7 @@ document.getElementById("delete_cards").addEventListener("click", () => {
 
 document.getElementById("show_card_box").addEventListener("click", () => {
   document.getElementById("create_card").style.display = "block";
-})
+});
 
 document.getElementById("close_card_box").addEventListener("click", () => {
   document.getElementById("create_card").style.display = "none";

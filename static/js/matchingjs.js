@@ -59,24 +59,4 @@ function drop(event) {
     draggableElement.setAttribute("draggable", "false");
     event.target.insertAdjacentHTML("afterbegin", `<i class="fas fa-${draggableElementData}"></i>`);
   }
-
 }
-var splashScreen = document.querySelector('.splash');
-  splashScreen.addEventListener('click',()=>
-  {
-    splashScreen.style.opacity = 0;
-    setTimeout(()=>{
-      splashScreen.classList.add('hidden')
-    },610)
-  })
-  var timer;
-  
-var ele = document.getElementById('timer');
-
-(function (){
-  var sec = 0;
-  timer = setInterval(()=>{
-    ele.innerHTML = '00:'+sec;
-    sec ++;
-  }, 1000) // each 1 second
-})() 

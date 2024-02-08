@@ -1,39 +1,17 @@
 {% extends "base.html" %}
-{% block top_css %}
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/allcss">
-    <link rel="stylesheet" href="../static/css/matchingcss.css">
-    <script src="../static/js/matchingjs.js" defer></script>
-{% endblock %}
+{% block top_css %}{% endblock %}
 {% block bottom_css %}{% endblock %}
 {% block title %}{% endblock %}
-{% block js %}{% endblock %}
 {% block content %}
 
 <body>
 
-    <section class="draggable-elements">
-        {% for term in set_data %}
-            <h1 class="draggable" draggable="true" alt="{{ term.term }}" id="{{ term.term }}">{{ term.term }}</h1>
+    <section class="termBoxes">
+        {% for term in set_data.terms %}
+
         {% endfor %}
     </section>
-    <section class="droppable-elements">
-        {% for term in set_data %}
-            <div class="droppable" data-draggable-id="{{ term.term }}"><span class="feef">{{ term.definition }}</span></div>
-        {% endfor %}
-    </section>
-    <div class = "splash">
-        <h1 class = "splash-header">START MATCHING</h1>
-    </div>
-    <div id="js_timer">
-        <div class = "stopwatchimg">
-        <img src="../static/images/stopwatch.png" alt="Again" style="width:3%;">
-    </div>
-        <div id="timer">
-           
-          00:00
-        </div>
-        
-      <div>
+
 </body>
 
 {% endblock %}

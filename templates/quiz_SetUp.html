@@ -3,3 +3,9 @@
 {% for divisor in [1, 2, 3, 4] %}
     <buttonSmall><a href="/quiz/{{ set_id }}/{{ num_terms // divisor }}">{{ num_terms // divisor }} Questions</a></buttonSmall>
 {% endfor %}
+
+<form method="post" action="/quiz/{{ set_id }}/">
+    <label for="question_slide">Number of Questions</label>
+    <input type="number" id="question_slide" name="question_slide" min="1" max="{{ num_terms }}">
+    <input type="submit" value="Submit">
+</form>
