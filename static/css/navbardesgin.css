@@ -102,6 +102,12 @@ nav a:hover::before {
   font-size: 90px;
   font-weight: 800;
 }
+
+button a{
+  text-decoration: none;
+  color: white;
+
+}
 button{
   background: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
   box-shadow: 0 16px 40px rgba(11,169,166,.16);
@@ -116,12 +122,6 @@ button{
   border-radius: 50%;
   transition: all ease 0.6s;
 }
-button a{
-  text-decoration: none;
-  color: white;
-
-}
-
 
 button:hover{
   background: rgb(0, 192, 226);
