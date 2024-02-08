@@ -259,18 +259,20 @@ def quizResults(set_id):
     terms_data = Term.query.filter_by(set_id=set_id).all()
     definitions = [term.definition for term in terms_data]
     user_answers = {key.split('_')[1]: int(value) for key, value in request.form.items() if key.startswith('answers')}
+    question_correct = 0
     results = []
     for question_id, user_answer in user_answers.items():
         right_answer_id = int(question_id)
         correct_answer = definitions[right_answer_id]
         if user_answer == right_answer_id + 1:
            results.append({"question_id": int(question_id), "correct": True, "user_answer": correct_answer, "correct_answer": correct_answer})
+           question_correct += 1
         else:
            results.append({"question_id": int(question_id), "correct": False, "user_answer": definitions[user_answer - 1], "correct_answer": correct_answer})
     app.logger.info("Form Data: %s", request.form)
     app.logger.info("User Answers: %s", user_answers)
     app.logger.info("Results: %s", results)
-    return render_template('quizResults.html', set_id=set_id, results=results, set_data=raw_set_data, definitions=definitions)
+    return render_template('quizResults.html', set_id=set_id, results=results, set_data=raw_set_data, definitions=definitions, question_correct=question_correct)
 
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])

@@ -1,11 +1,14 @@
 <h1>Quiz Results for {{ set_data.name }}</h1>
 {% for result in results %}
     <div>
-        <p>Question:</p>
+        <p>Question {{ loop.index }}:</p>
         {% if result.correct %}
-            <p>Correct! You answered: {{ definitions[result.question_id] }}</p>
+            <p>Correct! You answered: {{ result.user_answer }}</p>
         {% else %}
-            <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ definitions[result.question_id] }}</p>
+            <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ result.correct_answer }}</p>
         {% endif %}
     </div>
 {% endfor %}
+{% set totalQuestions = results|length %}
+{% set percentageScore = (question_correct / totalQuestions) * 100 %}
+<p>Score: {{ question_correct }} / {{ totalQuestions }} or {{ percentageScore }}%</p>
