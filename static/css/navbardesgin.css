@@ -1,31 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
-.index {
-	margin: 0;
-	background: rgb(209, 228, 233);
-	font-family: 'Work Sans', sans-serif;
-	font-weight: 800;
-}
-
-.container {
-	width: 100%;
-	margin: 50 auto;
-}
-
-
-
-header::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-  
-.logo {
-  float: left;
-  padding: 10px 
-}
-
 nav {
-  background: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
+  background: linear-gradient(271.19deg, #307DF6 0%, #14BBBF 100%), linear-gradient(135deg, #0CD5D1 0%, #0BA9A6 100%);
   padding: 10px;
   width: 100%;
   display: flex;
@@ -33,169 +7,29 @@ nav {
   align-items: center;
 }
 
-
-
-/*idk who put this here but it does nothing*/
 nav ul {
-  margin: 100;
-  padding: 100;
   list-style: none;
   display: flex;
-
-
 }
 
-/*DONT TOUCH*/nav li {
-  display: inline-block;
-  margin-left: 10;
-  padding-top: 10px;
-
+nav li {
+  margin-left: 10px;
 }
-
 
 nav a {
-  text-align: center;
-  color: black;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 14;
-  border-radius: 40px;
+  color: black;
   background: white;
   padding: 10px;
-  width: 200px;
-  height: 100px;
-  margin: 5px 90px;
-  position: relative;
-    top: -7px;
- }
-
-.back-video{
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+  border-radius: 40px;
+  transition: color 0.3s, background 0.3s;
 }
-
 
 nav a:hover {
   color: rgb(224, 231, 225);
 }
 
-
-nav a:hover::before {
-  width: 100%;
-}
-
-.content{
-  width: 100%;
-  position: absolute;
-  top: 45%;
-  transform: translateY(-50%);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgb(119, 186, 189)
-}
-.content h1{
-  margin-top: 80px;
-  font-size: 90px;
-  font-weight: 800;
-}
-
-button a{
-  text-decoration: none;
-  color: white;
-
-}
-button{
-  background: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
-  box-shadow: 0 16px 40px rgba(11,169,166,.16);
-  width: 64px;
-  height: 64px;
-  padding: 0;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  cursor: pointer;
-  border: none;
-  border-radius: 50%;
-  transition: all ease 0.6s;
-}
-
-button:hover{
-  background: rgb(0, 192, 226);
-  transition: 0.5s;
-}
-button:hover{
-  color: black;
-}
-
-  
-span{
-  color: white;
-  
-}
-
-*{
-  margin: 0;
-  padding: 0;
-}
-
-
-.search-bar{
-  width: 100%;
-  max-width: 700px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 60px;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 20%;
-  top: 100%;
-
-}
-.search-bar input{
-  background: transparent;
-  flex: 1;
-  border: 0;
-  outline: none;
-  padding: 24px 20px;
-  font-size: 20px;
-  color: #cac7ff;
-
-}
-.search-bar .icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 60px;
-  background-repeat: no-repeat;
-  background-position: center right;
-  background-image: url(/static/images/icon-search.svg);
-}
-.search-bar img{
-  max-width: 20px;
-}
-.search-bar button span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 1;
-  right: 0;
-  display: block;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-image: url(/static/images/icon-arrow-long-right.svg);
-}
-
-::placeholder{
-  color: linear-gradient(271.19deg,#307DF6 0%,#14BBBF 100%),linear-gradient(135deg,#0CD5D1 0%,#0BA9A6 100%);
-  display: flex;
-  text-align: center;
-
-
+nav a:last-child {
+  margin-right: 10px;
 }
