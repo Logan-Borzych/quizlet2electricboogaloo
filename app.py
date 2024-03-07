@@ -214,17 +214,114 @@ def quiz(set_id, amount_of_questions):
     raw_set_data = Set.query.get_or_404(set_id)
     app.logger.info(raw_set_data)
 
-    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, amount_of_questions=amount_of_questions)
-
-def questionCreate(set_id, flashcard_id):
-    #Random Num Range (For Wrong Answers)
-    min_number = 1
-    right_answer_id = flashcard_id
+    # Creates the list of flashcard ids that will be used for the quiz
     max_number = Term.query.filter_by(set_id=set_id).count()
-    random_numbers = random.sample([number for number in range(min_number, max_number + 1) if number != excluded_number], 2)
-    random_numbers.append(excluded_number)
-    random.shuffle(random_numbers)
-    
+    question_ids = random.sample(range(1, max_number + 1), amount_of_questions)
+    random.shuffle(question_ids)
+    multiple_choice = True
+    true_false = True
+    terms_data = Term.query.filter_by(set_id=set_id).all()
+    term_names = [term.term for term in terms_data]
+    definitions = [term.definition for term in terms_data]
+    app.logger.info("Term Names: %s", term_names)
+    app.logger.info("Definitions: %s", definitions)
+
+    # Create a consistent structure for each question
+    questions = [
+        {"data": questionCreate(set_id, question_id, multiple_choice, true_false, definitions)} 
+        for question_id in question_ids
+    ]
+
+    # Pass the formatted questions to the template
+    questions = [
+        {"type": question["data"][0], "data": question["data"][1]} 
+        for question in questions
+    ]
+
+    return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
+
+def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
+    question_type = 0
+    max_number = Term.query.filter_by(set_id=set_id).count()
+
+    if multiple_choice and true_false:
+        question_type = random.randint(1, 2)
+    elif multiple_choice and not true_false:
+        question_type = 1
+    else:
+        question_type = 2
+
+    if question_type == 1:
+        right_answer_id = flashcard_id - 1
+        wrong_answers_id = random.sample([number for number in range(1, max_number + 1) if number != right_answer_id + 1], 3)
+        wrong_answers_id.append(right_answer_id + 1)
+        random.shuffle(wrong_answers_id)
+        return {"type": question_type, "data": (wrong_answers_id, right_answer_id)}
+
+    if question_type == 2:
+        term_question_id = flashcard_id - 1
+        term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
+        return {"type": question_type, "data": (term_definition_id, term_question_id)}
+
+    # For true/false questions, correct_answer is either True or False based on whether the term matches the definition
+    term_question_id = flashcard_id - 1
+    term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
+    correct_answer = term_definition_id == term_question_id
+    return {"type": question_type, "data": (correct_answer, term_question_id)}
+
+
+@app.route('/quizResults/<int:set_id>', methods=['POST'])
+def quizResults(set_id):
+    raw_set_data = Set.query.get_or_404(set_id)
+    terms_data = Term.query.filter_by(set_id=set_id).all()
+    definitions = [term.definition for term in terms_data]
+    user_answers = {key.split('_')[1]: int(value) if value.isdigit() else value.lower() == 'true' for key, value in request.form.items() if key.startswith('answers')}
+    question_correct = 0
+    results = []
+
+    question_types = []  # Store question types in order
+
+    for question_id, user_answer in user_answers.items():
+        right_answer_id = int(question_id)
+        question_type = get_question_type(right_answer_id)  # You need to implement this function
+        question_types.append(question_type)
+
+        correct_answer = definitions[right_answer_id]
+
+        if question_type == "True/False":
+            correct_answer = correct_answer.lower() == 'true'
+            user_answer = user_answer  # Keep user_answer as is for True/False questions
+
+        if user_answer == right_answer_id + 1:
+            results.append({
+                "question_id": int(question_id),
+                "correct": True,
+                "user_answer": correct_answer,
+                "correct_answer": correct_answer,
+                "question_type": question_type
+            })
+            question_correct += 1
+        else:
+            results.append({
+                "question_id": int(question_id),
+                "correct": False,
+                "user_answer": definitions[user_answer - 1],
+                "correct_answer": correct_answer,
+                "question_type": question_type
+            })
+
+    app.logger.info("Form Data: %s", request.form)
+    app.logger.info("User Answers: %s", user_answers)
+    app.logger.info("Results: %s", results)
+    app.logger.info("Question Types: %s", question_types)  # Log question types
+
+    return render_template('quizResults.html', set_id=set_id, results=results, set_data=raw_set_data, definitions=definitions, question_correct=question_correct)
+
+def get_question_type(question_id):
+    # Implement this function to determine the question type based on question_id
+    # You can use your existing logic or adjust it as needed
+    return "True/False" if question_id % 2 == 0 else "Multiple Choice"
+
 #matching game page
 @app.route('/match/<int:set_id>', methods=['GET', 'POST'])
 def match(set_id: int) -> str:
