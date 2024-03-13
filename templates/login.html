@@ -1,29 +1,121 @@
-<!-- Page to login on, no functionality -->
-
 {% extends "base.html" %}
 {% block title %}{% endblock %}
 {% block content %}
+<head>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+  <style>
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    .login-container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .txt_field {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .txt_field input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      outline: none;
+      background: transparent;
+      border-bottom: 2px solid #333;
+      transition: all 0.3s ease;
+    }
+
+    .txt_field input:focus ~ span:before {
+      width: 100%;
+    }
+
+    .txt_field span:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #1266f1;
+      transition: all 0.3s ease;
+    }
+
+    .txt_field label {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      color: #333;
+      transform: translateY(-50%);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .txt_field input:valid ~ label,
+    .txt_field input:focus ~ label {
+      top: -10px;
+      font-size: 12px;
+      color: #1266f1;
+    }
+
+    .login-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .signup_link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
 
 <body>
   <div class="center">
-    <h1>Login</h1>
-    <form method="post">
+    <div class="login-container">
+      <h1>Login</h1>
       <div class="txt_field">
-        <input type="text" required>
+        <input type="email" id="email" required>
         <span></span>
-        <label>Username</label>
+        <label for="email">Email</label>
       </div>
       <div class="txt_field">
-        <input type="password" required>
+        <input type="password" id="password" required>
         <span></span>
-        <label>Password</label>
+        <label for="password">Password</label>
       </div>
-      <div class="pass">Forgot Password?</div>
-      <input type="submit" value="Login">
+      <div class="login-button">
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      </div>
       <div class="signup_link">
         Not a member? <a href="signup.html">Signup</a>
       </div>
-    </form>
+    </div>
   </div>
+
+  <script>
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    }
+  </script>
 </body>
 {% endblock %}
