@@ -1,10 +1,8 @@
-<!-- Page to connect flashcards page to terms database-->
-
 {% extends "base.html" %}
 {% block title %}{{ set_id }}{% endblock %}
 {% block content %}
 
-<body>
+<body style="background-color: #F4F4F4;">
     <div class="container">
         <h1>term/definition</h1>
         <br />
@@ -12,24 +10,44 @@
         <form action="{{ url_for('specific_sets', set_id=set_id)}}" METHOD="POST">
             <input type="text" placeholder="Term" name="term">
             <input type="text" placeholder="Definition" name="definition">
-            <input type="submit" value="Add Term" class="smallButton">
+            <input type="submit" value="Add Term" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">
         </form>
-        <smallButton class="btn_game"><a href="{{ url_for('match', set_id=set_id)}}">Match</a></smallButton>
-        <smallButton><a href="/quizSetUp/{{ set_id }}">Quiz</a></smallButton>
+        <form action="{{ url_for('match', set_id=set_id)}}" METHOD="POST">
+            <input type="hidden" name="set_id" value="{{ set_id }}">
+            <input type="submit" value="Match" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">
+        </form>
+        <form action="/quizSetUp/{{ set_id }}" METHOD="POST">
+            <input type="submit" value="Quiz" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">
+        </form>
 
         <br />
-        {% for term in set_data.terms %}
-        <p>
-            <!-- Term Modification / Deletion -->
-            Term: {{ term.term }} Definition: {{ term.definition }}
-            <a href="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" class="button"><smallButton>Edit</smallButton></a>
-            <a href="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" class="button"><smallButton>Delete</smallButton></a>
-        </p>
-        {% endfor %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for term in set_data.terms %}
+            <div class="col">
+                <div class="card" style="background-color: #C0C0C0;">
+                    <div class="card-body">
+                        <h5 class="card-title">Term: {{ term.term }}</h5>
+                        <p class="card-text">Definition: {{ term.definition }}</p>
+                        <form action="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
+                            <input type="hidden" name="set_id" value="{{ set_id }}">
+                            <input type="hidden" name="term_id" value="{{ term.id }}">
+                            <input type="submit" value="Edit" class="btn btn-success" style="background-color: #8C8C8C; border-color: #8C8C8C;">
+                        </form>
+                        <form action="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
+                            <input type="hidden" name="set_id" value="{{ set_id }}">
+                            <input type="hidden" name="term_id" value="{{ term.id }}">
+                            <input type="submit" value="Delete" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <div>
             <!-- Delete Set -->
-            <form method="post" action="/delete_set/{{ set_id }}" class="button">
-                <button type="submit">Delete Set</button>
+            <form method="post" action="/delete_set/{{ set_id }}">
+                <input type="hidden" name="set_id" value="{{ set_id }}">
+                <button type="submit" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">Delete Set</button>
             </form>
         </div>    
     </div>

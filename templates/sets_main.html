@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
         }
 
+<<<<<<< HEAD
         .container {
             margin: 0 auto;
             max-width: 800px;
@@ -91,16 +92,42 @@
             <input type="text" placeholder="Search sets" name="query">
             <input type="submit" value="Search" class="button">
         </form>
+=======
+<div class="container">
+    <h1>Sets Main</h1>
+    <br/>
 
-        <!-- Display search results here -->
-        {% if sets %}
-            <h2>Search Results:</h2>
-            <ul>
+    <form action="{{ url_for('sets_main') }}" method="POST" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search sets" name="query">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
+
+    <!-- Display search results here -->
+    {% if sets %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Search Results:</h2>
+            <ul class="list-group list-group-flush">
                 {% for set in sets %}
-                    <li><a href="{{ url_for('specific_sets', set_id=set.id) }}">{{ set.name }}</a></li>
+                <li class="list-group-item">
+                    <form action="{{ url_for('specific_sets', set_id=set.id) }}" method="GET">
+                        <button type="submit" class="btn btn-secondary">{{ set.name }}</button>
+                    </form>
+                </li>
                 {% endfor %}
             </ul>
+<<<<<<< HEAD
         {% endif %}
 
         <!-- Preview created sets -->
         <div class="set-prev
+=======
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2

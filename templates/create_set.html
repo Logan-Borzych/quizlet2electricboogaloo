@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Add a style block for custom CSS -->
 <style>
     body {
@@ -45,10 +46,13 @@
 </style>
 
 <!-- HTML content -->
+=======
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
 {% extends "base.html" %}
 {% block title %}Create a Set{% endblock %}
 {% block content %}
 
+<<<<<<< HEAD
 <div class="createset">
     <h1>Create New Set</h1>
     <form action="{{ url_for('create_set')}}" method="POST">
@@ -101,4 +105,22 @@
 </div>
 
 
+=======
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div class="createset text-center">
+                <h1>Create New Set</h1>
+                <form action="{{ url_for('create_set')}}" method="POST">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Set Name" name="name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Set</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
 {% endblock %}

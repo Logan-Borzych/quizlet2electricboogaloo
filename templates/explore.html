@@ -1,42 +1,55 @@
-{% extends "base.html" %} 
-{% block title %}fuck you{% endblock %}
-{% block top_css %}
-<link rel="stylesheet" href= "../static/css/explorecss.css">
-
- {% endblock %}
-{% block css %}
-
-   
-{% endblock %}
+{% extends "base.html" %}
+{% block title %}{{ set_id }}{% endblock %}
 {% block content %}
-    <body>
 
-     
-        <div class = "col">
-            <div class = "card1">
-                <img src="../static/images/flashcardsagain.png" alt="Again" style="width:75%;">
-                <h5>Practice Again</h5>
-                <p>See cards that you have practiced in the past</p>
-            </div>
-            <div class = "card2">
-                <img src="../static/images/whatyoumissed.png" alt="Again" style="width:75%;">
-                <h5>What You Missed</h5>
-                <p>Practice terms you missed from previous sets</p>
-            </div>
-            <div class = "card3">
-                <img src="../static/images/popularterms.png" alt="Again" style="width:75%;">
-                <h5>Popular Terms</h5>
-                <p>Check out some terms best suited for you</p>
-            </div>
-            <div class = "card4">
-             <img src="../static/images/testwhatyouknow2.png" alt="Again" style="width:75%;">
-                <h5>Test your knowledge</h5>
-                <p>Test what you know with a quiz of jumbled up questions</p>
-            </div>
+<body style="background-color: #1a1a1a; color: #ffffff;">
+    <div class="container">
+        <h1>term/definition</h1>
+        <br />
+        <!-- Term Addition -->
+        <form action="{{ url_for('specific_sets', set_id=set_id)}}" METHOD="POST">
+            <input type="text" placeholder="Term" name="term" class="form-control mb-2" style="background-color: #333333; color: #ffffff;">
+            <input type="text" placeholder="Definition" name="definition" class="form-control mb-2" style="background-color: #333333; color: #ffffff;">
+            <input type="submit" value="Add Term" class="btn btn-success" style="background-color: #4CAF50; border-color: #4CAF50;">
+        </form>
+        <form action="{{ url_for('match', set_id=set_id)}}" METHOD="POST">
+            <input type="hidden" name="set_id" value="{{ set_id }}">
+            <input type="submit" value="Match" class="btn btn-primary" style="background-color: #673AB7; border-color: #673AB7;">
+        </form>
+        <form action="/quizSetUp/{{ set_id }}" METHOD="POST">
+            <input type="submit" value="Quiz" class="btn btn-warning" style="background-color: #FFC107; border-color: #FFC107;">
+        </form>
 
+        <br />
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for term in set_data.terms %}
+            <div class="col">
+                <div class="card" style="background-color: #333333;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #ffffff;">Term: {{ term.term }}</h5>
+                        <p class="card-text" style="color: #ffffff;">Definition: {{ term.definition }}</p>
+                        <form action="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
+                            <input type="hidden" name="set_id" value="{{ set_id }}">
+                            <input type="hidden" name="term_id" value="{{ term.id }}">
+                            <input type="submit" value="Edit" class="btn btn-success" style="background-color: #4CAF50; border-color: #4CAF50;">
+                        </form>
+                        <form action="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
+                            <input type="hidden" name="set_id" value="{{ set_id }}">
+                            <input type="hidden" name="term_id" value="{{ term.id }}">
+                            <input type="submit" value="Delete" class="btn btn-danger" style="background-color: #f44336; border-color: #f44336;">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        
-        <script src="../static/js/explorejs.js"></script>
-    </body>
-</html>
+        <div>
+            <!-- Delete Set -->
+            <form method="post" action="/delete_set/{{ set_id }}">
+                <input type="hidden" name="set_id" value="{{ set_id }}">
+                <button type="submit" class="btn btn-danger" style="background-color: #f44336; border-color: #f44336;">Delete Set</button>
+            </form>
+        </div>    
+    </div>
+</body>
 {% endblock %}
