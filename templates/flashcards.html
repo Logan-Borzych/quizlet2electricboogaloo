@@ -1,10 +1,7 @@
-<!-- Flashcard page, where you can create, edit and delete cards from a set -->
-
 {% extends "base.html" %}
 {% block title %}{% endblock %}
 {% block content %}
-
-<body>
+<body class="flashcard-page">
 
   <main>
 
@@ -13,8 +10,8 @@
         <div id="header">
           <h1>Flashcards</h1>
           <div>
-            <button id="show_card_box">Add Card</button>
-            <button id="delete_cards">Del Cards</button>
+            <button class="btn btn-primary" id="show_card_box">Add Card</button>
+            <button class="btn btn-danger" id="delete_cards">Del Cards</button>
           </div>
         </div>
       </div>
@@ -22,17 +19,22 @@
 
     <section>
       <div class="container">
-        <div id="create_card">
+        <div id="create_card" class="flashcard-box">
           <h2>Create Flashcard</h2>
-          <!---FIX THIS SO IT ALIGNS WITH MODERN STANDARDS FOR HTML, THE CURRENT CODE IS NOT FIT FOR CURRENT USE-->
-          <label for="question">Question</label>
-          <textarea id="question" maxlength="280"></textarea>
-          <label for="answer" maxlength="280">Answer</label>
-          <br>
-          <textarea id="answer"></textarea>
-          <div>
-            <button id="save_card">Save</button> <button id="close_card_box">Close</button>
-          </div>
+          <form>
+            <div class="mb-3">
+              <label for="question" class="form-label">Question</label>
+              <textarea class="form-control" id="question" maxlength="280"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="answer" class="form-label">Answer</label>
+              <textarea class="form-control" id="answer" maxlength="280"></textarea>
+            </div>
+            <div>
+              <button class="btn btn-success" id="save_card">Save</button>
+              <button class="btn btn-secondary" id="close_card_box">Close</button>
+            </div>
+          </form>
         </div>
       </div>
     </section>
