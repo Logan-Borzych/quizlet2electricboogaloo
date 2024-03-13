@@ -1,7 +1,111 @@
+<<<<<<< HEAD
+<!-- Add a style block for custom CSS -->
+<style>
+    body {
+        background-color: #0f0f0f; /* Obsidian color for background */
+        color: #ffffff; /* White text color */
+        font-family: Arial, sans-serif; /* Font style */
+        margin: 0;
+        padding: 0;
+    }
+
+    .createset {
+        width: 50%;
+        margin: 0 auto;
+        padding-top: 50px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #1a1a1a; /* Darker shade for input fields */
+        color: #ffffff;
+    }
+
+    input[type="submit"] {
+        padding: 15px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff; /* Blue accent color for the button */
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+    }
+</style>
+
+<!-- HTML content -->
+=======
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
 {% extends "base.html" %}
 {% block title %}Create a Set{% endblock %}
 {% block content %}
 
+<<<<<<< HEAD
+<div class="createset">
+    <h1>Create New Set</h1>
+    <form action="{{ url_for('create_set')}}" method="POST">
+        <input type="text" placeholder="Set Name" name="name">
+        <input type="submit" value="Create Set" class="button">
+    </form>
+</div>
+<!-- Add a style block for custom CSS -->
+<style>
+    /* Existing CSS styles */
+
+    .example-sets {
+        margin-top: 50px;
+        padding: 20px;
+        background-color: #1a1a1a; /* Darker shade for the background */
+        border-radius: 10px;
+    }
+
+    .example-set {
+        margin-bottom: 20px;
+    }
+
+    .example-set h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .example-set p {
+        margin-bottom: 0;
+    }
+</style>
+
+
+
+
+
+<div class="example-sets">
+    <div class="example-set">
+        <h3>Animals</h3>
+        <p>Example: Dog, Cat, Pig, Horse</p>
+    </div>
+    <div class="example-set">
+        <h3>Food</h3>
+        <p>Example: Hotdog, Pizza, Chicken, Steak.</p>
+    </div>
+    <div class="example-set">
+        <h3>Holidays</h3>
+        <p>Christmas, Halloween, Easter, Valentines</p>
+    </div>
+</div>
+
+
+=======
 <div class="container">
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
@@ -18,4 +122,5 @@
     </div>
 </div>
 
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
 {% endblock %}

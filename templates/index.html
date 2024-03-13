@@ -1,13 +1,44 @@
 {% extends "base.html" %}   
 {% block title %}{% endblock %}
 {% block content %}
+<<<<<<< HEAD
+<body class="index"> 
+    <header>         
+        <div class="content">
+            <h1>The Better Way To <span class = "auto-type"></span></h1>
+            
+            <div>
+                <form action = "{{ url_for('sets_main', query=q) }}" class = "search-bar">
+                <div class = "icon"></div>
+                <input type = "text" placeholder = "Search Sets" name = "q">
+                <button type = "submit"><span></span></button>
+               </form>
+      
+                <button><a href = "{{ url_for('create')}}">Create</a></button>
+                <button><a href = "{{ url_for('explore')}}">Explore</a></button>  
+            </div>
+            
+        </div>    
+        <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+        <script>
+            var typed = new Typed(".auto-type",{
+                strings: ["Learn", "Teach", "Study"],
+                typeSpeed: 150,
+                backSpeed: 150,
+                loop:true
+
+            })
+        </script>
+       
+    </header>
+    <div class = "hero">
+        <video autoplay loop muted plays-inline class = "back-video" id="videoPlayer">
+            <source src = "../static/images/video.mp4" type = "video/mp4">
+            
+
+=======
+<body class="index">
 <body class="index" style="overflow: hidden;">
-    <!-- Video -->
-    <div class="hero position-fixed top-0 start-0 w-100 h-100 overflow-hidden z-index--1">
-        <video autoplay loop muted plays-inline class="back-video position-absolute top-0 start-0">
-            <source src="../static/images/video.mp4" type="video/mp4">
-        </video>
-    </div>
 
     <!-- Content -->
     <div class="container-fluid p-0 position-relative">
