@@ -139,7 +139,7 @@ def edit_pair(set_id, term_id):
 
     if request.method == "POST":
         # Update the pair with the form data
-        pair_to_update.term = request.form['term_in']
+        pair_to_update.term = request.form['term']
         pair_to_update.definition = request.form['definition']
 
         try:

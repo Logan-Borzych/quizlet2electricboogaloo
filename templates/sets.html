@@ -28,22 +28,44 @@
                     <div class="card-body">
                         <h5 class="card-title">Term: {{ term.term }}</h5>
                         <p class="card-text">Definition: {{ term.definition }}</p>
-                        <form action="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
-                            <input type="hidden" name="set_id" value="{{ set_id }}">
+                        <!-- Form for live edit option -->
+                        <form onsubmit="return toggleEditOption('{{ term.id }}');">
                             <input type="hidden" name="term_id" value="{{ term.id }}">
                             <input type="submit" value="Edit" class="btn btn-success" style="background-color: #8C8C8C; border-color: #8C8C8C;">
                         </form>
-                        <form action="{{ url_for('delete_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
+                        <!-- Actual edit form (hidden by default) -->
+                        <form id="edit_form_{{ term.id }}" style="display: none;" action="{{ url_for('edit_pair', set_id=set_id, term_id=term.id)}}" METHOD="POST">
                             <input type="hidden" name="set_id" value="{{ set_id }}">
                             <input type="hidden" name="term_id" value="{{ term.id }}">
-                            <input type="submit" value="Delete" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">
+                            <input type="text" class="form-control" placeholder="Term" name="term" value="{{ term.term }}">
+                            <input type="text" class="form-control" placeholder="Definition" name="definition" value="{{ term.definition }}">
+                            <input type="submit" value="Save" class="btn btn-primary">
                         </form>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div>
+    </div>
+    
+    <script>
+        function toggleEditOption(termId) {
+            var editForm = document.getElementById('edit_form_' + termId);
+            
+            // Toggle the visibility of the edit form
+            if (editForm.style.display === 'none') {
+                // Show the edit form if it's currently hidden
+                editForm.style.display = 'block';
+            } else {
+                // Hide the edit form if it's currently visible
+                editForm.style.display = 'none';
+            }
+            
+            // Prevent the default form submission
+            return false;
+        }
+    </script>
+    {% endblock %}
             <!-- Delete Set -->
             <form method="post" action="/delete_set/{{ set_id }}">
                 <input type="hidden" name="set_id" value="{{ set_id }}">
@@ -52,4 +74,3 @@
         </div>    
     </div>
 </body>
-{% endblock %}
