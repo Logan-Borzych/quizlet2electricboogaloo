@@ -19,7 +19,11 @@
         <form action="/quizSetUp/{{ set_id }}" METHOD="POST">
             <input type="submit" value="Quiz" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">
         </form>
-
+        <!-- Delete Set -->
+        <form method="post" action="/delete_set/{{ set_id }}">
+            <input type="hidden" name="set_id" value="{{ set_id }}">
+            <button type="submit" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">Delete Set</button>
+        </form>
         <br />
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for term in set_data.terms %}
@@ -40,6 +44,10 @@
                             <input type="text" class="form-control" placeholder="Term" name="term" value="{{ term.term }}">
                             <input type="text" class="form-control" placeholder="Definition" name="definition" value="{{ term.definition }}">
                             <input type="submit" value="Save" class="btn btn-primary">
+                        </form>
+                        <!-- Delete Button -->
+                        <form method="post" action="{{ url_for('delete_pair', set_id=set_id, term_id=term.id) }}">
+                            <button type="submit" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -66,11 +74,6 @@
         }
     </script>
     {% endblock %}
-            <!-- Delete Set -->
-            <form method="post" action="/delete_set/{{ set_id }}">
-                <input type="hidden" name="set_id" value="{{ set_id }}">
-                <button type="submit" class="btn btn-danger" style="background-color: #8C8C8C; border-color: #8C8C8C;">Delete Set</button>
-            </form>
         </div>    
     </div>
 </body>

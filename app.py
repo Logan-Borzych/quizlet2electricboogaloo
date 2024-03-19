@@ -56,27 +56,42 @@ def createPage():
 def create():
     return render_template('create.html')
 
-# create_set route
 @app.route('/create_set', methods=['GET', 'POST'])
 def create_set():
     if request.method == "POST":
         set_name = request.form['name']
-
         new_set = Set(name=set_name)
-
         try:
             db.session.add(new_set)
             db.session.commit()
-
-            app.logger.debug(f"Redirecting to: {url_for('specific_sets', set_id=new_set.id)}")
-            
-            # Use url_for to generate the URL for  specific_sets
-            return redirect(url_for('specific_sets', set_id=new_set.id))
+            app.logger.debug(f"Redirecting to: {url_for('term_addition', set_id=new_set.id)}")
+            # Redirect to the term_addition page with the newly created set_id
+            return redirect(url_for('term_addition', set_id=new_set.id))
         except Exception as e:
             app.logger.error(f"Error: {e}")
             return "check console"
     else:
+        # Render the template for creating a set
         return render_template('create_set.html')
+
+@app.route('/term_addition/<int:set_id>', methods=['GET'])
+def term_addition(set_id):
+    # Render the template for term addition page
+    return render_template('term_addition.html', set_id=set_id)
+
+@app.route('/submit_terms/<int:set_id>', methods=['POST'])
+def submit_terms(set_id):
+    # Retrieve the terms data from the request
+    term = request.form.get('term')
+    definition = request.form.get('definition')
+    
+    # Process the terms data (e.g., save to the database)
+    # Example: Assuming Term model exists
+    term_entry = Term(term=term, definition=definition, set_id=set_id)
+    db.session.add(term_entry)
+    db.session.commit()
+
+return render_template('sets.html', set_id=set_id, set_data=set_data)
 
 
 
@@ -103,6 +118,7 @@ def sets_main():
     else:
         # Render the initial sets_main page
         return render_template('sets_main.html', sets=None, query=None)
+        
 @app.route('/sets/<int:set_id>', methods=['GET', 'POST'])
 def specific_sets(set_id):
     if request.method == "POST":
@@ -129,8 +145,6 @@ def specific_sets(set_id):
         terms = Term.query.filter_by(set_id=set_id).all()
         return render_template('sets.html', set_data=set_data, terms=terms, set_id=set_id)
 
-
-
 #allows the user to update their database entry
 @app.route('/sets/<string:set_id>/edit/<int:term_id>', methods=['GET', 'POST'])
 def edit_pair(set_id, term_id):
@@ -154,17 +168,20 @@ def edit_pair(set_id, term_id):
         # Render the edit form when it's a GET request
         return render_template('editPair.html', term=pair_to_update, set_id=set_id)
 
-#deletes a pair
-@app.route('/sets/<int:set_id>/delete/<int:term_id>')
-def delete_pair(term_id, set_id):
-    delete_pair = Term.query.get_or_404(term_id)
-    try:
-        db.session.delete(delete_pair)
-        db.session.commit()
-        return redirect(url_for('specific_sets', set_id=set_id))
-    except Exception as e:
-        print(f"Error: {e}")
-        return "Oops"
+@app.route('/sets/<int:set_id>/delete/<int:term_id>', methods=['GET', 'POST'])
+def delete_pair(set_id, term_id):
+    if request.method == 'POST':
+        delete_pair = Term.query.get_or_404(term_id)
+        try:
+            db.session.delete(delete_pair)
+            db.session.commit()
+            return redirect(url_for('specific_sets', set_id=set_id))
+        except Exception as e:
+            print(f"Error: {e}")
+            return "Oops"
+    else:
+        # Handle GET request, if needed
+        pass
 
 @app.route('/')
 def index():

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ set_id }}{% endblock %}
+{% block content %}
+<body style="background-color: #F4F4F4;">
+    <div class="container">
+        <h1>Create Your Terms</h1>
+        <br />
+        <!-- Container for dynamically adding term addition forms -->
+        <div id="termFormsContainer">
+            <!-- Initial term addition form -->
+            <form class="termAdditionForm" id="termForm1">
+                <input type="text" placeholder="Term" name="term">
+                <input type="text" placeholder="Definition" name="definition">
+            </form>
+        </div>
+        <br>
+        <!-- Add more term button -->
+        <button id="addTermButton" class="btn btn-secondary">Add Another Term</button>
+        <button id="deleteLastButton" class="btn btn-danger">Delete Last Term</button>
+        <br><br>
+        <!-- Submit button for all term addition forms -->
+        <button id="submitAllButton" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">Submit All Terms</button>
+    </div>
+
+    <script>
+        document.getElementById("submitAllButton").addEventListener("click", function() {
+            var forms = document.querySelectorAll(".termAdditionForm");
+            forms.forEach(function(form) {
+                form.action = "{{ url_for('submit_terms', set_id=set_id) }}";
+                form.method = "POST";
+                form.submit();
+            });
+        });
+    
+        // Function to add new term addition form
+        function addTermForm() {
+            var container = document.getElementById("termFormsContainer");
+            var newForm = document.createElement("form");
+            newForm.classList.add("termAdditionForm");
+            newForm.id = "termForm" + (container.children.length + 1);
+            newForm.innerHTML = `
+                <input type="text" placeholder="Term" name="term">
+                <input type="text" placeholder="Definition" name="definition">
+            `;
+            container.appendChild(newForm);
+        }
+    
+        // Event listener for "Add Another Term" button
+        document.getElementById("addTermButton").addEventListener("click", function() {
+            addTermForm();
+        });
+
+        // Function to remove the last term addition form
+        function removeLastForm() {
+            var container = document.getElementById("termFormsContainer");
+            if (container.children.length > 1) {
+                container.removeChild(container.lastElementChild);
+            }
+        }
+
+        // Event listener for "Delete Last Term" button
+        document.getElementById("deleteLastButton").addEventListener("click", function() {
+            removeLastForm();
+        });
+    </script>
+</body>
+{% endblock %}
