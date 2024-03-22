@@ -19,18 +19,42 @@
         <button id="deleteLastButton" class="btn btn-danger">Delete Last Term</button>
         <br><br>
         <!-- Submit button for all term addition forms -->
-        <button id="submitAllButton" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">Submit All Terms</button>
+        <button type="button" id="submitAllButton" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">Submit All Terms</button>
     </div>
 
     <script>
-        document.getElementById("submitAllButton").addEventListener("click", function() {
+        // Function to submit all term addition forms
+        function submitAllForms() {
             var forms = document.querySelectorAll(".termAdditionForm");
+            var formDataArray = [];
+            
             forms.forEach(function(form) {
-                form.action = "{{ url_for('submit_terms', set_id=set_id) }}";
-                form.method = "POST";
-                form.submit();
+                var termInput = form.querySelector('input[name="term"]').value;
+                var definitionInput = form.querySelector('input[name="definition"]').value;
+                
+                formDataArray.push({term: termInput, definition: definitionInput});
             });
-        });
+            
+            // Sending the form data array to the server
+            fetch("{{ url_for('submit_terms', set_id=set_id) }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formDataArray)
+            }).then(function(response) {
+                if (response.ok) {
+                    console.log("Terms submitted successfully!");
+                    // Optionally, you can redirect the user or display a success message here
+                } else {
+                    console.error("Failed to submit terms:", response.statusText);
+                    // Optionally, display an error message to the user
+                }
+            }).catch(function(error) {
+                console.error('Error:', error);
+                // Handle network errors or other issues
+            });
+        }
     
         // Function to add new term addition form
         function addTermForm() {
