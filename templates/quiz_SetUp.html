@@ -4,8 +4,33 @@
     <buttonSmall><a href="/quiz/{{ set_id }}/{{ num_terms // divisor }}">{{ num_terms // divisor }} Questions</a></buttonSmall>
 {% endfor %}
 
-<form method="post" action="/quiz/{{ set_id }}/">
+<form method="post" action="/quiz/{{ set_id }}/{% if request.form.multiple_choice %}true{% else %}false{% endif %}/{% if request.form.true_false %}true{% else %}false{% endif %}/{{ request.form.question_slide }}">
+    <label for="multiple_choice">Multiple Choice?</label>
+    <input type="checkbox" id="multiple_choice" name="multiple_choice" {% if request.form.multiple_choice %}checked{% endif %}>
+
+    <label for="true_false">True/False?</label>
+    <input type="checkbox" id="true_false" name="true_false" {% if request.form.true_false %}checked{% endif %}>
+    
     <label for="question_slide">Number of Questions</label>
     <input type="number" id="question_slide" name="question_slide" min="1" max="{{ num_terms }}">
+    
     <input type="submit" value="Submit">
 </form>
+
+<script>
+    function updateQuizURL() {
+        event.preventDefault(); // Prevent default form submission
+        var multipleChoice = document.getElementById('multiple_choice').checked ? 'true' : 'false';
+        var trueFalse = document.getElementById('true_false').checked ? 'true' : 'false';
+        var numQuestions = document.getElementById('question_slide').value;
+
+        // Update the action attribute directly
+        document.getElementById('quizForm').action = `/quiz/${set_id}/${multipleChoice}/${trueFalse}/${numQuestions}`;
+
+        // Log the constructed URL to the console (for debugging)
+        console.log("Constructed URL:", document.getElementById('quizForm').action);
+
+        // Submit the form
+        document.getElementById('quizForm').submit();
+    }
+</script>
