@@ -11,6 +11,7 @@
             <form class="termAdditionForm" id="termForm1">
                 <input type="text" placeholder="Term" name="term">
                 <input type="text" placeholder="Definition" name="definition">
+                <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
             </form>
         </div>
         <br>
@@ -27,34 +28,61 @@
         function submitAllForms() {
             var forms = document.querySelectorAll(".termAdditionForm");
             var formDataArray = [];
+            var valid = true;
             
             forms.forEach(function(form) {
-                var termInput = form.querySelector('input[name="term"]').value;
-                var definitionInput = form.querySelector('input[name="definition"]').value;
+                var termInput = form.querySelector('input[name="term"]').value.trim();
+                var definitionInput = form.querySelector('input[name="definition"]').value.trim();
                 
-                formDataArray.push({term: termInput, definition: definitionInput});
+                // Check if term or definition is blank
+                if (termInput === '' || definitionInput === '') {
+                    valid = false;
+                    if (!form.querySelector('.warningMessage')) {
+                        // Create a warning message element
+                        var warningDiv = document.createElement('div');
+                        warningDiv.innerText = "Please fill in all term and definition fields before submitting.";
+                        warningDiv.classList.add('warningMessage'); // Add a class to the warning message element
+                        warningDiv.style.color = 'red'; // Set the color of the warning message
+                        // Append the warning message element to the form
+                        form.appendChild(warningDiv);
+                    }
+                } else {
+                    // Remove warning message if term and definition are not blank
+                    var warningDiv = form.querySelector('.warningMessage');
+                    if (warningDiv) {
+                        warningDiv.parentNode.removeChild(warningDiv);
+                    }
+                    formDataArray.push({term: termInput, definition: definitionInput});
+                }
             });
             
-            // Sending the form data array to the server
-            fetch("{{ url_for('submit_terms', set_id=set_id) }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formDataArray)
-            }).then(function(response) {
-                if (response.ok) {
-                    console.log("Terms submitted successfully!");
-                    // Optionally, you can redirect the user or display a success message here
-                } else {
-                    console.error("Failed to submit terms:", response.statusText);
-                    // Optionally, display an error message to the user
-                }
-            }).catch(function(error) {
-                console.error('Error:', error);
-                // Handle network errors or other issues
-            });
+            if (valid) {
+                // Sending the form data array to the server
+                fetch("{{ url_for('submit_terms', set_id=set_id) }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formDataArray)
+                }).then(function(response) {
+                    if (response.ok) {
+                        console.log("Terms submitted successfully!");
+                        // Redirect to specific set page upon successful submission
+                        window.location.href = "{{ url_for('specific_sets', set_id=set_id) }}";
+                    } else {
+                        console.error("Failed to submit terms:", response.statusText);
+                        // Optionally, display an error message to the user
+                    }
+                }).catch(function(error) {
+                    console.error('Error:', error);
+                    // Handle network errors or other issues
+                });
+            }
         }
+
+        document.getElementById("submitAllButton").addEventListener("click", function() {
+            submitAllForms();
+        });
     
         // Function to add new term addition form
         function addTermForm() {
@@ -65,6 +93,7 @@
             newForm.innerHTML = `
                 <input type="text" placeholder="Term" name="term">
                 <input type="text" placeholder="Definition" name="definition">
+                <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
             `;
             container.appendChild(newForm);
         }
@@ -72,6 +101,20 @@
         // Event listener for "Add Another Term" button
         document.getElementById("addTermButton").addEventListener("click", function() {
             addTermForm();
+        });
+
+        // Function to remove a specific term addition form
+        function removeForm(form) {
+            var container = document.getElementById("termFormsContainer");
+            container.removeChild(form);
+        }
+
+        // Event listener for dynamically added "Delete Term" buttons
+        document.getElementById("termFormsContainer").addEventListener("click", function(event) {
+            if (event.target.classList.contains("deleteTermButton")) {
+                var form = event.target.closest(".termAdditionForm");
+                removeForm(form);
+            }
         });
 
         // Function to remove the last term addition form

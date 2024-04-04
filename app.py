@@ -79,13 +79,11 @@ def term_addition(set_id):
     # Render the template for term addition page
     return render_template('term_addition.html', set_id=set_id)
 
-@app.route('/submit_terms/<int:set_id>', methods=['POST'])
+@app.route('/submit_terms/<int:set_id>', methods=['GET', 'POST'])
 def submit_terms(set_id):
-    # Retrieve the terms data from the request
-    terms_data = request.json  # Get the JSON data sent from the client
-    
-    # Process the terms data and add them to the database
     try:
+        terms_data = request.json  # Get the JSON data sent from the client
+        
         for term_data in terms_data:
             term = term_data.get('term')
             definition = term_data.get('definition')
@@ -95,10 +93,13 @@ def submit_terms(set_id):
         db.session.commit()
         set_data = Set.query.get_or_404(set_id)
         return render_template('sets.html', set_id=set_id, set_data=set_data)
+    
     except Exception as e:
-        # Handle any errors that occur during processing
         db.session.rollback()
+        # If client expects JSON response
         return jsonify({'error': str(e)}), 500
+        # If client expects HTML response
+        # return render_template('error.html', error=str(e)), 500
 
 @app.route('/sets', methods=['GET', 'POST'])
 def sets_main():
