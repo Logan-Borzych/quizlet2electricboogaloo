@@ -1,17 +1,151 @@
 {% extends "base.html" %}
-{% block top_css %}{% endblock %}
+{% block top_css %}
+{% endblock %}
 {% block bottom_css %}{% endblock %}
-{% block title %}{% endblock %}
+{% block title %}Matching Game{% endblock %}
 {% block content %}
 
+<style>
+    /* Existing styles for boxes */
+    .draggable-box, .droppable-box {
+        width: 120px;
+        height: 70px;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        line-height: 50px; /* Adjusted for vertical alignment */
+        position: absolute;  /* Positioning relative to their nearest positioned ancestor or to the initial containing block */
+    }
+
+    .draggable-box {
+        background-color: #444;
+        border: 2px solid #666;
+        cursor: pointer;
+    }
+
+    .droppable-box {
+        background-color: #666;
+        border: 2px solid #444;
+        cursor: pointer;
+    }
+
+    /* Adjusting for padding */
+    body {
+        position: relative;
+        min-height: 100vh;
+        padding-top: 25px; /* Padding from the top excluded for navbar */
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-bottom: 25px;
+        overflow: hidden; /* Prevents scroll on drag */
+    }
+
+    #navbar {
+        height: 50px; /* Assuming navbar height */
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #000;
+        color: #fff;
+        line-height: 50px; /* Center text vertically */
+        text-align: center;
+    }
+</style>
+
+
+
 <body>
+    <div id="timer">Timer: <span id="timer-display">00:00</span></div>
+    <div id="counter">Matches: <span id="match-counter">0</span></div>
 
-    <section class="termBoxes">
-        {% for term in set_data.terms %}
-
+    <section class="draggable-elements">
+        {% for term in set_data %}
+            <div class="draggable-box" data-draggable-id="{{ term.id }}" draggable="true" ondragstart="drag(event)" alt="{{ term.term }}">{{ term.term }}</div>
         {% endfor %}
     </section>
 
+    <section class="droppable-elements">
+        {% for term in set_data %}
+            <div class="droppable-box" data-draggable-id="{{ term.id }}" ondragover="allowDrop(event)" ondrop="drop(event)"><span>{{ term.definition }}</span></div>
+        {% endfor %}
+    </section>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Position elements randomly
+        const draggableElements = document.querySelectorAll('.draggable-box');
+        const droppableElements = document.querySelectorAll('.droppable-box');
+        positionElementsRandomly(draggableElements);
+        positionElementsRandomly(droppableElements);
+    });
+
+    function positionElementsRandomly(elements) {
+        const maxX = window.innerWidth - 150; // 120px width + 30px for padding
+        const maxY = window.innerHeight - 100; // 70px height + 30px for padding
+        elements.forEach(element => {
+            const randomX = Math.floor(Math.random() * (maxX - 50)) + 25; // 25px minimum padding
+            const randomY = Math.floor(Math.random() * (maxY - 50)) + 25;
+            element.style.left = `${randomX}px`;
+            element.style.top = `${randomY}px`;
+        });
+    }
+
+    var timerDisplay = document.getElementById('timer-display');
+    var startTime;
+    var timerInterval;
+
+    function startTimer() {
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+        var elapsedTime = Date.now() - startTime;
+        var minutes = Math.floor(elapsedTime / 60000);
+        var seconds = Math.floor((elapsedTime % 60000) / 1000);
+        timerDisplay.textContent = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    }
+
+    startTimer();
+
+    var matchCounter = document.getElementById('match-counter');
+    var matches = 0;
+
+    function incrementMatchCounter() {
+        matches++;
+        matchCounter.textContent = matches;
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData('text/plain', event.target.dataset.draggableId);
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        var draggableId = event.dataTransfer.getData('text/plain');
+        var droppableBox = event.target.closest('.droppable-box');
+        var droppableId = droppableBox.dataset.draggableId;
+
+        if (draggableId === droppableId) {
+            const draggedElement = document.querySelector('.draggable-box[data-draggable-id="' + draggableId + '"]');
+            droppableBox.style.opacity = '0'; // Fade away the droppable
+            draggedElement.style.opacity = '0'; // Fade away the draggable
+            incrementMatchCounter();
+            setTimeout(function () {
+                droppableBox.style.display = 'none';
+                draggedElement.style.display = 'none';
+            }, 1000);
+        }
+    }
+</script>
+
 
 {% endblock %}

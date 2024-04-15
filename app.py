@@ -39,7 +39,10 @@ class Set(db.Model):
 #homepage
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html')
+    # Fetch some sets from the database
+    sets = Set.query.limit(5).all()  # Fetching a limited number of sets, you can adjust this limit as needed
+
+    return render_template('index.html', sets=sets)
 
 #features page (tbh i dont know what this is for)
 @app.route('/features', methods=['GET','POST'])
