@@ -1,38 +1,127 @@
-<!-- Page for matching feature, only has the given example, needs to be
-connected to database -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/allcss">
+  <title>Matching Game</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
   <link rel="stylesheet" href="../static/css/matchingcss.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #222; 
+      color: #eee; 
+    }
+
+    #timer,
+    #counter {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    #timer {
+      font-size: 1.5em;
+    }
+
+    #counter {
+      font-size: 1.1em;
+    }
+
+    .draggable-elements,
+    .droppable-elements {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 50px;
+    }
+
+    .draggable,
+    .droppable {
+      padding: 10px 20px;
+      background-color: #444; 
+      border: 2px solid #666;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .draggable:hover,
+    .droppable:hover {
+      background-color: #333; 
+    }
+
+    .droppable span {
+      display: block;
+      text-align: center;
+      font-size: 0.4em;
+    }
+  </style>
   <script src="../static/js/matchingjs.js" defer></script>
-
 </head>
-
 <body>
-
-
+  <div id="timer">Timer: <span id="timer-display">00:00</span></div>
+  <div id="counter">Matches: <span id="match-counter">0</span></div>
 
   <section class="draggable-elements">
     <h1 class="draggable" draggable="true" alt="Sehr" id="Sehr">Sehr</h1>
     <h1 class="draggable" draggable="true" alt="Logan" id="Logan">Logan</h1>
     <h1 class="draggable" draggable="true" alt="Nate" id="Nate">Nate</h1>
-
-
-
   </section>
+
   <section class="droppable-elements">
-    <div class="droppable" data-draggable-id="Logan"><span>other guy</span></div>
-    <div class="droppable" data-draggable-id="Sehr"><span>Smart and awesome</span></div>
-    <div class="droppable" data-draggable-id="Nate"><span>other guy #2</span></div>
-
-
+    <div class="droppable" data-draggable-id="Logan"><span>Other Guy</span></div>
+    <div class="droppable" data-draggable-id="Sehr"><span>Smart and Awesome</span></div>
+    <div class="droppable" data-draggable-id="Nate"><span>Other Guy #2</span></div>
   </section>
+
+  <script>
+   
+    var timerDisplay = document.getElementById('timer-display');
+    var startTime;
+    var timerInterval;
+
+    function startTimer() {
+      startTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      var elapsedTime = Date.now() - startTime;
+      var minutes = Math.floor(elapsedTime / 60000);
+      var seconds = Math.floor((elapsedTime % 60000) / 1000);
+      timerDisplay.textContent = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    }
+
+    startTimer(); 
+
+    
+    var matchCounter = document.getElementById('match-counter');
+    var matches = 0;
+
+    function incrementMatchCounter() {
+      matches++;
+      matchCounter.textContent = matches;
+    }
+/*who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am iwho am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i who am i
+who am i who am i who am i who am i who am i who am i who am i who am i who am i who ami who am i who ami who am i who am i */
+   
+  </script>
 </body>
 
 </html>

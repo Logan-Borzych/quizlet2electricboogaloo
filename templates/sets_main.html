@@ -1,7 +1,98 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block title %}Sets Main{% endblock %}
 {% block content %}
+<head>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
 
+<<<<<<< HEAD
+        .container {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="submit"],
+        button {
+            background-color: #333;
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            margin-right: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+        }
+
+        input[type="submit"],
+        button {
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .set-preview {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .set-preview h2 {
+            color: #fff;
+        }
+
+        .set-preview ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .set-preview li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sets Main</h1>
+        <br/>
+        <form action="{{ url_for('sets_main') }}" method="POST">
+            <input type="text" placeholder="Search sets" name="query">
+            <input type="submit" value="Search" class="button">
+        </form>
+=======
 <div class="container">
     <h1>Sets Main</h1>
     <br/>
@@ -12,6 +103,7 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
 
     <!-- Display search results here -->
     {% if sets %}
@@ -27,8 +119,15 @@
                 </li>
                 {% endfor %}
             </ul>
+<<<<<<< HEAD
+        {% endif %}
+
+        <!-- Preview created sets -->
+        <div class="set-prev
+=======
         </div>
     </div>
     {% endif %}
 </div>
 {% endblock %}
+>>>>>>> 0a472c1214796795dea10d1fba5a66837cf8e5f2
