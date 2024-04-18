@@ -7,9 +7,9 @@
         <h1>term/definition</h1>
         <br />
         <!-- Term Addition -->
-        <form action="{{ url_for('specific_sets', set_id=set_id)}}" METHOD="POST">
-            <input type="text" placeholder="Term" name="term">
-            <input type="text" placeholder="Definition" name="definition">
+        <form action="{{ url_for('specific_sets', set_id=set_id)}}" method="POST" style="background-color: #F4F4F4; padding: 10px;">
+            <input type="text" name="term" placeholder="Term" oninput="autoExpand(this, true)" style="margin-bottom: 10px;">
+            <input type="text" name="definition" placeholder="Definition" oninput="autoExpand(this, false)" style="margin-bottom: 10px;">
             <input type="submit" value="Add Term" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">
         </form>
         <form action="{{ url_for('match', set_id=set_id)}}" METHOD="POST">
@@ -71,6 +71,32 @@
             
             // Prevent the default form submission
             return false;
+        }
+        let previousWidth = 0;
+        // Function to auto-expand the input box vertically
+        function autoExpand(element, isTerm) {
+            // Check if the text has overflowed the text box
+            if (element.scrollWidth > element.clientWidth) {
+                // Reset the input's size to allow it to shrink if needed
+                element.style.width = 'auto';
+                // Set the size of the input based on its content
+                let newSize = (element.scrollWidth + 60);
+                element.style.width = newSize + 'px';
+                
+                // Decrease the font size of the input text
+                let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+                fontSize -= 0.015;
+                if (fontSize < 13) { // Adjust the minimum font size as needed
+                    fontSize = 13;
+                }
+                // Set the maximum width depending on whether it's a term or definition box
+                let maxWidth = isTerm ? 250 : 600; // Adjust the maximum width as needed
+                if (element.offsetWidth > maxWidth) {
+                    element.style.width = maxWidth + 'px'; // Set the width to the maximum value
+                }
+                element.style.fontSize = fontSize + 'px';
+            }
+            previousWidth = element.clientWidth;
         }
     </script>
     {% endblock %}

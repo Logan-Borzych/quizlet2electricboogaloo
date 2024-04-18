@@ -9,8 +9,8 @@
         <div id="termFormsContainer">
             <!-- Initial term addition form -->
             <form class="termAdditionForm" id="termForm1">
-                <input type="text" placeholder="Term" name="term">
-                <input type="text" placeholder="Definition" name="definition">
+                <input type="text" name="term" placeholder="Term" oninput="autoExpand(this, true)">
+                <input type="text" name="definition" placeholder="Definition" oninput="autoExpand(this, false)">
                 <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
             </form>
         </div>
@@ -24,19 +24,49 @@
     </div>
 
     <script>
+        let previousWidth = 0;
+
+        // Function to auto-expand the input box vertically
+        function autoExpand(element, isTerm) {
+            // Check if the text has overflowed the text box
+            if (element.scrollWidth > element.clientWidth) {
+                // Reset the input's size to allow it to shrink if needed
+                element.style.width = 'auto';
+                // Set the size of the input based on its content
+                let newSize = (element.scrollWidth + 60);
+                element.style.width = newSize + 'px';
+                
+                // Decrease the font size of the input text
+                let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+                fontSize -= 0.015;
+                if (fontSize < 13) { // Adjust the minimum font size as needed
+                    fontSize = 13;
+                }
+                // Set the maximum width depending on whether it's a term or definition box
+                let maxWidth = isTerm ? 250 : 600; // Adjust the maximum width as needed
+                if (element.offsetWidth > maxWidth) {
+                    element.style.width = maxWidth + 'px'; // Set the width to the maximum value
+                }
+                element.style.fontSize = fontSize + 'px';
+            }
+            previousWidth = element.clientWidth;
+        }
+
         // Function to submit all term addition forms
         function submitAllForms() {
             var forms = document.querySelectorAll(".termAdditionForm");
-            var formDataArray = [];
-            var valid = true;
+            var formDataArray = []; // Array to store form data
+            var valid = true; // Flag to track form validity
             
+            // Loop through each form
             forms.forEach(function(form) {
-                var termInput = form.querySelector('input[name="term"]').value.trim();
-                var definitionInput = form.querySelector('input[name="definition"]').value.trim();
+                var termInput = form.querySelector('input[name="term"]').value.trim(); // Get term input value
+                var definitionInput = form.querySelector('input[name="definition"]').value.trim(); // Get definition input value
                 
-                // Check if term or definition is blank
+                // Validate term and definition inputs
                 if (termInput === '' || definitionInput === '') {
                     valid = false;
+                    // Check if warning message already exists
                     if (!form.querySelector('.warningMessage')) {
                         // Create a warning message element
                         var warningDiv = document.createElement('div');
@@ -46,6 +76,7 @@
                         // Append the warning message element to the form
                         form.appendChild(warningDiv);
                     }
+                    console.error("Term and definition cannot be blank.");
                 } else {
                     // Remove warning message if term and definition are not blank
                     var warningDiv = form.querySelector('.warningMessage');
@@ -56,6 +87,7 @@
                 }
             });
             
+            // If form data is valid, proceed with submission
             if (valid) {
                 // Sending the form data array to the server
                 fetch("{{ url_for('submit_terms', set_id=set_id) }}", {
@@ -63,7 +95,7 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(formDataArray)
+                    body: JSON.stringify(formDataArray) // Convert form data array to JSON string
                 }).then(function(response) {
                     if (response.ok) {
                         console.log("Terms submitted successfully!");
@@ -91,8 +123,8 @@
             newForm.classList.add("termAdditionForm");
             newForm.id = "termForm" + (container.children.length + 1);
             newForm.innerHTML = `
-                <input type="text" placeholder="Term" name="term">
-                <input type="text" placeholder="Definition" name="definition">
+                <input type="text" name="term" placeholder="Term" oninput="autoExpand(this, true)">
+                <input type="text" name="definition" placeholder="Definition" oninput="autoExpand(this, false)">
                 <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
             `;
             container.appendChild(newForm);
