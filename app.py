@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from fuzzywuzzy import process
 from flask_migrate import Migrate
@@ -59,29 +59,50 @@ def createPage():
 def create():
     return render_template('create.html')
 
-# create_set route
 @app.route('/create_set', methods=['GET', 'POST'])
 def create_set():
     if request.method == "POST":
         set_name = request.form['name']
-
         new_set = Set(name=set_name)
-
         try:
             db.session.add(new_set)
             db.session.commit()
-
-            app.logger.debug(f"Redirecting to: {url_for('specific_sets', set_id=new_set.id)}")
-            
-            # Use url_for to generate the URL for  specific_sets
-            return redirect(url_for('specific_sets', set_id=new_set.id))
+            app.logger.debug(f"Redirecting to: {url_for('term_addition', set_id=new_set.id)}")
+            # Redirect to the term_addition page with the newly created set_id
+            return redirect(url_for('term_addition', set_id=new_set.id))
         except Exception as e:
             app.logger.error(f"Error: {e}")
             return "check console"
     else:
+        # Render the template for creating a set
         return render_template('create_set.html')
 
+@app.route('/term_addition/<int:set_id>', methods=['GET'])
+def term_addition(set_id):
+    # Render the template for term addition page
+    return render_template('term_addition.html', set_id=set_id)
 
+@app.route('/submit_terms/<int:set_id>', methods=['GET', 'POST'])
+def submit_terms(set_id):
+    try:
+        terms_data = request.json  # Get the JSON data sent from the client
+        
+        for term_data in terms_data:
+            term = term_data.get('term')
+            definition = term_data.get('definition')
+            term_entry = Term(term=term, definition=definition, set_id=set_id)
+            db.session.add(term_entry)
+        
+        db.session.commit()
+        set_data = Set.query.get_or_404(set_id)
+        return render_template('sets.html', set_id=set_id, set_data=set_data)
+    
+    except Exception as e:
+        db.session.rollback()
+        # If client expects JSON response
+        return jsonify({'error': str(e)}), 500
+        # If client expects HTML response
+        # return render_template('error.html', error=str(e)), 500
 
 @app.route('/sets', methods=['GET', 'POST'])
 def sets_main():
@@ -106,6 +127,7 @@ def sets_main():
     else:
         # Render the initial sets_main page
         return render_template('sets_main.html', sets=None, query=None)
+        
 @app.route('/sets/<int:set_id>', methods=['GET', 'POST'])
 def specific_sets(set_id):
     if request.method == "POST":
@@ -132,8 +154,6 @@ def specific_sets(set_id):
         terms = Term.query.filter_by(set_id=set_id).all()
         return render_template('sets.html', set_data=set_data, terms=terms, set_id=set_id)
 
-
-
 #allows the user to update their database entry
 @app.route('/sets/<string:set_id>/edit/<int:term_id>', methods=['GET', 'POST'])
 def edit_pair(set_id, term_id):
@@ -157,17 +177,20 @@ def edit_pair(set_id, term_id):
         # Render the edit form when it's a GET request
         return render_template('editPair.html', term=pair_to_update, set_id=set_id)
 
-#deletes a pair
-@app.route('/sets/<int:set_id>/delete/<int:term_id>')
-def delete_pair(term_id, set_id):
-    delete_pair = Term.query.get_or_404(term_id)
-    try:
-        db.session.delete(delete_pair)
-        db.session.commit()
-        return redirect(url_for('specific_sets', set_id=set_id))
-    except Exception as e:
-        print(f"Error: {e}")
-        return "Oops"
+@app.route('/sets/<int:set_id>/delete/<int:term_id>', methods=['GET', 'POST'])
+def delete_pair(set_id, term_id):
+    if request.method == 'POST':
+        delete_pair = Term.query.get_or_404(term_id)
+        try:
+            db.session.delete(delete_pair)
+            db.session.commit()
+            return redirect(url_for('specific_sets', set_id=set_id))
+        except Exception as e:
+            print(f"Error: {e}")
+            return "Oops"
+    else:
+        # Handle GET request, if needed
+        pass
 
 @app.route('/')
 def index():
@@ -230,17 +253,8 @@ def quiz(set_id, amount_of_questions):
     app.logger.info("Definitions: %s", definitions)
 
     # Create a consistent structure for each question
-    questions = [
-        {"data": questionCreate(set_id, question_id, multiple_choice, true_false, definitions)} 
-        for question_id in question_ids
-    ]
-
-    # Pass the formatted questions to the template
-    questions = [
-        {"type": question["data"][0], "data": question["data"][1]} 
-        for question in questions
-    ]
-
+    questions = [{"data": questionCreate(set_id, question_id, multiple_choice, true_false)} for question_id in question_ids]
+    
     return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
 
 def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
@@ -259,19 +273,11 @@ def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
         wrong_answers_id = random.sample([number for number in range(1, max_number + 1) if number != right_answer_id + 1], 3)
         wrong_answers_id.append(right_answer_id + 1)
         random.shuffle(wrong_answers_id)
-        return {"type": question_type, "data": (wrong_answers_id, right_answer_id)}
-
-    if question_type == 2:
+        return {"type": question_type, "data": (wrong_answers_id, right_answer_id), "id": question_id}
+    elif question_type == 2:
         term_question_id = flashcard_id - 1
         term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-        return {"type": question_type, "data": (term_definition_id, term_question_id)}
-
-    # For true/false questions, correct_answer is either True or False based on whether the term matches the definition
-    term_question_id = flashcard_id - 1
-    term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-    correct_answer = term_definition_id == term_question_id
-    return {"type": question_type, "data": (correct_answer, term_question_id)}
-
+        question_data = {"type": question_type, "data": (term_definition_id, term_question_id), "id": question_id}
 
 @app.route('/quizResults/<int:set_id>', methods=['POST'])
 def quizResults(set_id):

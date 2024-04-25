@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}{{ set_id }}{% endblock %}
+{% block content %}
+<body style="background-color: #F4F4F4;">
+    <div class="container">
+        <h1>Create Your Terms</h1>
+        <br />
+        <!-- Container for dynamically adding term addition forms -->
+        <div id="termFormsContainer">
+            <!-- Initial term addition form -->
+            <form class="termAdditionForm" id="termForm1">
+                <input type="text" name="term" placeholder="Term" oninput="autoExpand(this, true)">
+                <input type="text" name="definition" placeholder="Definition" oninput="autoExpand(this, false)">
+                <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
+            </form>
+        </div>
+        <br>
+        <!-- Add more term button -->
+        <button id="addTermButton" class="btn btn-secondary">Add Another Term</button>
+        <button id="deleteLastButton" class="btn btn-danger">Delete Last Term</button>
+        <br><br>
+        <!-- Submit button for all term addition forms -->
+        <button type="button" id="submitAllButton" class="btn btn-primary" style="background-color: #C0C0C0; border-color: #C0C0C0;">Submit All Terms</button>
+    </div>
+
+    <script>
+        let previousWidth = 0;
+
+        // Function to auto-expand the input box vertically
+        function autoExpand(element, isTerm) {
+            // Check if the text has overflowed the text box
+            if (element.scrollWidth > element.clientWidth) {
+                // Reset the input's size to allow it to shrink if needed
+                element.style.width = 'auto';
+                // Set the size of the input based on its content
+                let newSize = (element.scrollWidth + 60);
+                element.style.width = newSize + 'px';
+                
+                // Decrease the font size of the input text
+                let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+                fontSize -= 0.015;
+                if (fontSize < 13) { // Adjust the minimum font size as needed
+                    fontSize = 13;
+                }
+                // Set the maximum width depending on whether it's a term or definition box
+                let maxWidth = isTerm ? 300 : 600; // Adjust the maximum width as needed
+                if (element.offsetWidth > maxWidth) {
+                    element.style.width = maxWidth + 'px'; // Set the width to the maximum value
+                }
+                element.style.fontSize = fontSize + 'px';
+            }
+            previousWidth = element.clientWidth;
+        }
+
+        // Function to submit all term addition forms
+        function submitAllForms() {
+            var forms = document.querySelectorAll(".termAdditionForm");
+            var formDataArray = []; // Array to store form data
+            var valid = true; // Flag to track form validity
+            
+            // Loop through each form
+            forms.forEach(function(form) {
+                var termInput = form.querySelector('input[name="term"]').value.trim(); // Get term input value
+                var definitionInput = form.querySelector('input[name="definition"]').value.trim(); // Get definition input value
+                
+                // Validate term and definition inputs
+                if (termInput === '' || definitionInput === '') {
+                    valid = false;
+                    // Check if warning message already exists
+                    if (!form.querySelector('.warningMessage')) {
+                        // Create a warning message element
+                        var warningDiv = document.createElement('div');
+                        warningDiv.innerText = "Please fill in all term and definition fields before submitting.";
+                        warningDiv.classList.add('warningMessage'); // Add a class to the warning message element
+                        warningDiv.style.color = 'red'; // Set the color of the warning message
+                        // Append the warning message element to the form
+                        form.appendChild(warningDiv);
+                    }
+                    console.error("Term and definition cannot be blank.");
+                } else {
+                    // Remove warning message if term and definition are not blank
+                    var warningDiv = form.querySelector('.warningMessage');
+                    if (warningDiv) {
+                        warningDiv.parentNode.removeChild(warningDiv);
+                    }
+                    formDataArray.push({term: termInput, definition: definitionInput});
+                }
+            });
+            
+            // If form data is valid, proceed with submission
+            if (valid) {
+                // Sending the form data array to the server
+                fetch("{{ url_for('submit_terms', set_id=set_id) }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formDataArray) // Convert form data array to JSON string
+                }).then(function(response) {
+                    if (response.ok) {
+                        console.log("Terms submitted successfully!");
+                        // Redirect to specific set page upon successful submission
+                        window.location.href = "{{ url_for('specific_sets', set_id=set_id) }}";
+                    } else {
+                        console.error("Failed to submit terms:", response.statusText);
+                        // Optionally, display an error message to the user
+                    }
+                }).catch(function(error) {
+                    console.error('Error:', error);
+                    // Handle network errors or other issues
+                });
+            }
+        }
+
+        document.getElementById("submitAllButton").addEventListener("click", function() {
+            submitAllForms();
+        });
+    
+        // Function to add new term addition form
+        function addTermForm() {
+            var container = document.getElementById("termFormsContainer");
+            var newForm = document.createElement("form");
+            newForm.classList.add("termAdditionForm");
+            newForm.id = "termForm" + (container.children.length + 1);
+            newForm.innerHTML = `
+                <input type="text" name="term" placeholder="Term" oninput="autoExpand(this, true)">
+                <input type="text" name="definition" placeholder="Definition" oninput="autoExpand(this, false)">
+                <button type="button" class="btn btn-danger deleteTermButton">Delete Term</button>
+            `;
+            container.appendChild(newForm);
+        }
+    
+        // Event listener for "Add Another Term" button
+        document.getElementById("addTermButton").addEventListener("click", function() {
+            addTermForm();
+        });
+
+        // Function to remove a specific term addition form
+        function removeForm(form) {
+            var container = document.getElementById("termFormsContainer");
+            container.removeChild(form);
+        }
+
+        // Event listener for dynamically added "Delete Term" buttons
+        document.getElementById("termFormsContainer").addEventListener("click", function(event) {
+            if (event.target.classList.contains("deleteTermButton")) {
+                var form = event.target.closest(".termAdditionForm");
+                removeForm(form);
+            }
+        });
+
+        // Function to remove the last term addition form
+        function removeLastForm() {
+            var container = document.getElementById("termFormsContainer");
+            if (container.children.length > 1) {
+                container.removeChild(container.lastElementChild);
+            }
+        }
+
+        // Event listener for "Delete Last Term" button
+        document.getElementById("deleteLastButton").addEventListener("click", function() {
+            removeLastForm();
+        });
+    </script>
+</body>
+{% endblock %}
