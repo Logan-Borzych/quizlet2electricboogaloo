@@ -253,17 +253,8 @@ def quiz(set_id, amount_of_questions):
     app.logger.info("Definitions: %s", definitions)
 
     # Create a consistent structure for each question
-    questions = [
-        {"data": questionCreate(set_id, question_id, multiple_choice, true_false, definitions)} 
-        for question_id in question_ids
-    ]
-
-    # Pass the formatted questions to the template
-    questions = [
-        {"type": question["data"][0], "data": question["data"][1]} 
-        for question in questions
-    ]
-
+    questions = [{"data": questionCreate(set_id, question_id, multiple_choice, true_false)} for question_id in question_ids]
+    
     return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
 
 def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
@@ -282,19 +273,11 @@ def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
         wrong_answers_id = random.sample([number for number in range(1, max_number + 1) if number != right_answer_id + 1], 3)
         wrong_answers_id.append(right_answer_id + 1)
         random.shuffle(wrong_answers_id)
-        return {"type": question_type, "data": (wrong_answers_id, right_answer_id)}
-
-    if question_type == 2:
+        return {"type": question_type, "data": (wrong_answers_id, right_answer_id), "id": question_id}
+    elif question_type == 2:
         term_question_id = flashcard_id - 1
         term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-        return {"type": question_type, "data": (term_definition_id, term_question_id)}
-
-    # For true/false questions, correct_answer is either True or False based on whether the term matches the definition
-    term_question_id = flashcard_id - 1
-    term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-    correct_answer = term_definition_id == term_question_id
-    return {"type": question_type, "data": (correct_answer, term_question_id)}
-
+        question_data = {"type": question_type, "data": (term_definition_id, term_question_id), "id": question_id}
 
 @app.route('/quizResults/<int:set_id>', methods=['POST'])
 def quizResults(set_id):
