@@ -2,24 +2,24 @@
     <h1>Quiz on {{ set_data.name }}</h1>
     {% for question in questions %}
         <div>    
-            {% if question.data[0] == 1 %}
+            {% if question.data['type'] == 1 %}
                 <!-- Render multiple-choice question -->
                 <p>Question {{ loop.index }}: Give a definition for {{ term_names[question.id] }}?</p>
-                {% for answer in question.data[0] %}
-                    <input type="radio" id="{{ term_names[question.id] }}_{{ answer }}" name="answers_{{ question.id }}" value="{{ answer }}">
-                    <label for="{{ term_names[question.id] }}_{{ answer }}">{{ definitions[answer - 1] }}</label><br>
+                {% for answer in question.data['data'][0] %}
+                    <input type="radio" id="{{ term_names[question.data['id']] }}_{{ answer }}" name="answers_{{ question.data['id'] }}" value="{{ answer }}">
+                    <label for="{{ term_names[question.data['id']] }}_{{ answer }}">{{ definitions[answer - 1] }}</label><br>
                 {% endfor %}
-            {% elif question.data[0] == 2 %}
+            {% elif question.data['type'] == 2 %}
                 <!-- Render true/false question -->
-                <p>Question {{ loop.index }}: Does this definition match the term {{ term_names[question.id] }}: {{ definitions[question.data[1]] }}?</p>
-                <input type="radio" id="{{ term_names[question.id] }}_True" name="answers_{{ question.id }}" value="True">
-                <label for="{{ term_names[question.id] }}_True">True</label><br>
+                <p>Question {{ loop.index }}: Does this definition match the term {{ term_names[question.data['id']] }}: {{ definitions[question.data['data'][1]] }}?</p>
+                <input type="radio" id="{{ term_names[question.data['id']] }}_True" name="answers_{{ question.data['id'] }}" value="True">
+                <label for="{{ term_names[question.data['id']] }}_True">True</label><br>
 
-                <input type="radio" id="{{ term_names[question.id] }}_False" name="answers_{{ question.id }}" value="False">
-                <label for="{{ term_names[question.id] }}_False">False</label><br>
+                <input type="radio" id="{{ term_names[question.data['id']] }}_False" name="answers_{{ question.data['id'] }}" value="False">
+                <label for="{{ term_names[question.data['id']] }}_False">False</label><br>
             {% endif %}
             
-            <p>Right Answer: {{ definitions[question.data[1]] }}</p>
+            <p>Right Answer: {{ definitions[question.data['data'][1]] }}</p>
         </div>
     {% endfor %}
 
