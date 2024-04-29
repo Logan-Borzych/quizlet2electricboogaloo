@@ -8,28 +8,36 @@
 <style>
     /* Existing styles for boxes */
     .draggable-box, .droppable-box {
-        width: 120px;
-        height: 70px;
-        border-radius: 5px;
-        margin: 10px;
-        padding: 10px;
-        color: white;
-        text-align: center;
-        line-height: 50px; /* Adjusted for vertical alignment */
-        position: absolute;  /* Positioning relative to their nearest positioned ancestor or to the initial containing block */
-    }
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    word-break: break-word;
+    line-height: normal; /* Resetting line-height */
+    position: absolute;
+    display: flex; /* Use flexbox for dynamic sizing */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
 
-    .draggable-box {
-        background-color: #444;
-        border: 2px solid #666;
-        cursor: pointer;
-    }
+/* Adjusted draggable box */
+.draggable-box {
+    background-color: #444;
+    border: 2px solid #666;
+    cursor: pointer;
+    min-width: 120px; /* Set minimum width */
+    min-height: 70px; /* Set minimum height */
+}
 
-    .droppable-box {
-        background-color: #666;
-        border: 2px solid #444;
-        cursor: pointer;
-    }
+/* Adjusted droppable box */
+.droppable-box {
+    background-color: #666;
+    border: 2px solid #444;
+    cursor: pointer;
+    min-width: 120px; /* Set minimum width */
+    min-height: 70px; /* Set minimum height */
+}
 
     /* Adjusting for padding */
     body {
@@ -75,24 +83,54 @@
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Position elements randomly
-        const draggableElements = document.querySelectorAll('.draggable-box');
-        const droppableElements = document.querySelectorAll('.droppable-box');
-        positionElementsRandomly(draggableElements);
-        positionElementsRandomly(droppableElements);
+   document.addEventListener('DOMContentLoaded', function () {
+    // Position elements randomly
+    const draggableElements = document.querySelectorAll('.draggable-box');
+    const droppableElements = document.querySelectorAll('.droppable-box');
+    positionElementsRandomly(draggableElements);
+    positionElementsRandomly(droppableElements);
+
+    // Resize boxes to fit content if necessary
+    resizeBoxes();
+});
+
+function positionElementsRandomly(elements) {
+    const maxX = window.innerWidth - 150; // 120px width + 30px for padding
+    const maxY = window.innerHeight - 100; // 70px height + 30px for padding
+    elements.forEach(element => {
+        const randomX = Math.floor(Math.random() * (maxX - 50)) + 25; // 25px minimum padding
+        const randomY = Math.floor(Math.random() * (maxY - 50)) + 25;
+        element.style.left = `${randomX}px`;
+        element.style.top = `${randomY}px`;
+    });
+}
+
+function resizeBoxes() {
+    const draggableElements = document.querySelectorAll('.draggable-box');
+    const droppableElements = document.querySelectorAll('.droppable-box');
+
+    draggableElements.forEach(element => {
+        const textWidth = element.scrollWidth;
+        const textHeight = element.scrollHeight;
+        if (textWidth + 20 > element.offsetWidth || textHeight + 20 > element.offsetHeight) {
+            element.style.width = `${textWidth + 20}px`; // Add padding if necessary
+            element.style.height = `${textHeight + 20}px`; // Add padding if necessary
+        }
     });
 
-    function positionElementsRandomly(elements) {
-        const maxX = window.innerWidth - 150; // 120px width + 30px for padding
-        const maxY = window.innerHeight - 100; // 70px height + 30px for padding
-        elements.forEach(element => {
-            const randomX = Math.floor(Math.random() * (maxX - 50)) + 25; // 25px minimum padding
-            const randomY = Math.floor(Math.random() * (maxY - 50)) + 25;
-            element.style.left = `${randomX}px`;
-            element.style.top = `${randomY}px`;
-        });
-    }
+    droppableElements.forEach(element => {
+        const textWidth = element.querySelector('span').scrollWidth;
+        const textHeight = element.querySelector('span').scrollHeight;
+        if (textWidth + 20 > element.offsetWidth || textHeight + 20 > element.offsetHeight) {
+            element.style.width = `${textWidth + 20}px`; // Add padding if necessary
+            element.style.height = `${textHeight + 20}px`; // Add padding if necessary
+        }
+    });
+}
+
+window.addEventListener('resize', resizeBoxes);
+
+
 
     var timerDisplay = document.getElementById('timer-display');
     var startTime;

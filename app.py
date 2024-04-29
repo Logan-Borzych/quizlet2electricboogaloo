@@ -273,12 +273,12 @@ def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
         wrong_answers_id = random.sample([number for number in range(1, max_number + 1) if number != right_answer_id + 1], 3)
         wrong_answers_id.append(right_answer_id + 1)
         random.shuffle(wrong_answers_id)
-        return {"type": question_type, "data": (wrong_answers_id, right_answer_id), "id": question_id}
+        return {"type": question_type, "data": (wrong_answers_id, right_answer_id)}
     elif question_type == 2:
         term_question_id = flashcard_id - 1
         term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-        question_data = {"type": question_type, "data": (term_definition_id, term_question_id), "id": question_id}
-
+        return {"type": question_type, "data": (term_definition_id, term_question_id)}
+        
 @app.route('/quizResults/<int:set_id>', methods=['POST'])
 def quizResults(set_id):
     raw_set_data = Set.query.get_or_404(set_id)
