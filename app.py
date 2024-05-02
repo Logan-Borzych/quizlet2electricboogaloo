@@ -255,6 +255,7 @@ def quiz(set_id, amount_of_questions):
     # Create a consistent structure for each question
     questions = [{"data": questionCreate(set_id, question_id, multiple_choice, true_false)} for question_id in question_ids]
     
+    app.logger.info("Questions: %s", questions)
     return render_template('quiz.html', set_id=set_id, set_data=raw_set_data, questions=questions, term_names=term_names, definitions=definitions)
 
 def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
@@ -275,10 +276,20 @@ def questionCreate(set_id, flashcard_id, multiple_choice, true_false):
         random.shuffle(wrong_answers_id)
         return {"type": question_type, "data": (wrong_answers_id, right_answer_id)}
     elif question_type == 2:
-        term_question_id = flashcard_id - 1
-        term_definition_id = random.choice([number for number in range(1, max_number + 1) if number != term_question_id + 1])
-        return {"type": question_type, "data": (term_definition_id, term_question_id)}
-        
+        true_or_false = random.randint(1, 2)
+        if true_or_false == 1:
+            term_id = flashcard_id - 1
+            term_definition_id = flashcard_id - 1
+            answer = True
+            return {"type": question_type, "data": (term_id, term_definition_id, answer)}
+        else:
+            right_answer_id = flashcard_id - 1
+            term_definition_id = right_answer_id
+            while term_definition_id == right_answer_id:
+                term_definition_id = random.randint(1, max_number)
+            answer = False
+            return {"type": question_type, "data": (right_answer_id, term_definition_id, answer)}
+
 @app.route('/quizResults/<int:set_id>', methods=['POST'])
 def quizResults(set_id):
     raw_set_data = Set.query.get_or_404(set_id)

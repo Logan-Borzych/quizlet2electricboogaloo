@@ -1,14 +1,25 @@
-<h1>Quiz Results for {{ set_data.name }}</h1>
+<h1>Quiz Results</h1>
+{% set totalQuestions = results|length %}
+{% set question_correct = 0 %}
 {% for result in results %}
     <div>
         <p>Question {{ loop.index }}:</p>
-        {% if result.correct %}
-            <p>Correct! You answered: {{ result.user_answer }}</p>
-        {% else %}
-            <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ result.correct_answer }}</p>
+        {% if result.question_type == 'Multiple Choice' %}
+            {% if result.correct %}
+                <p>Correct! You answered: {{ result.user_answer }}</p>
+                {% set question_correct = question_correct + 1 %}
+            {% else %}
+                <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ result.correct_answer }}</p>
+            {% endif %}
+        {% elif result.question_type == 'True/False' %}
+            {% if result.correct %}
+                <p>Correct! You answered: {{ result.user_answer }}</p>
+                {% set question_correct = question_correct + 1 %}
+            {% else %}
+                <p>Incorrect! Your answer: {{ result.user_answer }}. Correct answer: {{ result.correct_answer }}</p>
+            {% endif %}
         {% endif %}
     </div>
 {% endfor %}
-{% set totalQuestions = results|length %}
 {% set percentageScore = (question_correct / totalQuestions) * 100 %}
 <p>Score: {{ question_correct }} / {{ totalQuestions }} or {{ percentageScore }}%</p>
